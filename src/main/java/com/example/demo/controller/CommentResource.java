@@ -28,7 +28,7 @@ public class CommentResource {
 	@Autowired
 	CommentJPA commentJPA;
 
-//	@Autowired
+//	@Autowiredaaaaaasss
 //	private CoursesHardcodedService courseManagementService;
 
 	@GetMapping("/instructors/{username}/comment")

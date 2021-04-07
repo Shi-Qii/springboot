@@ -127,7 +127,7 @@ public class movieResource {
         return "";
     }
 
-    //讀取圖片
+    //讀取圖片1
     @GetMapping("/getImage/{name}")
 
     public void getImage(HttpServletResponse response, @PathVariable("name") String name) throws IOException {
