@@ -28,6 +28,10 @@ public class movieTheater {
     private String type;
     private String acs;
 
+    public movieTheater() {
+
+    }
+
     public String getMovieComment() {
         return movieComment;
     }
