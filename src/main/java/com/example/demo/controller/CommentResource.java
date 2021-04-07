@@ -63,7 +63,6 @@ public class CommentResource {
 		MovieCommentBean createdComment = commentJPA.save(movieCommentBean);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdComment.getId())
 				.toUri();
-		System.out.println("====>Comment");
 		return ResponseEntity.created(uri).build();
 	}
 
