@@ -11,7 +11,6 @@ db = create_engine('mssql+pymssql://sa:password@127.0.0.1:1433/Financial?charset
 eng = db.connect()
 
 
-
 '''
 塞選top30 上市法人買賣超
 抓取最新的日期資訊
@@ -22,7 +21,7 @@ market_type =>市場別
 buy_sell    =>買超或賣超
     ex.buy=買超  sell=賣超
 cond        =>特定條件 
-    ex.Dealer、Investment_trust、Foreign_investors或是組合
+    ex.Dealer、Investment_trust、Foreign_investors或是組合<Investment_trust+Dealer>
 total_day   =>加總天數預設1天
 '''
 def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1):
