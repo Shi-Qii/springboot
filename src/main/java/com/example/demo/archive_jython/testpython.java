@@ -1,4 +1,4 @@
-package com.example.demo.jython;
+package com.example.demo.archive_jython;
 
 import org.python.util.PythonInterpreter;
 

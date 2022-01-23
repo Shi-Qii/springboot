@@ -1,4 +1,4 @@
-package com.example.demo.jython;
+package com.example.demo.archive_jython;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
