@@ -54,7 +54,7 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
     Institutional_investors_top_SQL="select top 30 \
             b.Processing_date, \
             a.Industry_sector, \
-            trim(a.Stock_num), \
+            trim(a.Stock_num) as Stock_num, \
             a.Stock_name, \
             c.Open_price, \
             c.Close_price, \
@@ -131,7 +131,7 @@ def Individual_stock_Institutional_investors(check_code,stock_num,day):
     #塞選特定期間法人買賣超狀況
     Individual_stock_Institutional_investors_SQL="select top %s \
     a.Processing_date, \
-    trim(a.Stock_num), \
+    trim(a.Stock_num) as Stock_num, \
     b.Stock_name, \
     round((a.Foreign_investors/1000),1) as Foreign_investors, \
     round((a.Investment_trust/1000),1) as Investment_trust, \
