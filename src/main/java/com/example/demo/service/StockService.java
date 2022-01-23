@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Institutional;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -7,13 +10,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @Service
 public class StockService {
 
+//    @Autowired
+//    Institutional institutional;
 
-    public String getData() throws IOException {
+
+    public Map<String, ArrayList<Object>> getData() throws IOException {
+
+        HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
+        HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String path = getPath();
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
@@ -42,11 +54,30 @@ public class StockService {
                 table += line;
             }
             in.close();
-            System.out.println(table);
+            JSONObject jsonData = new JSONObject(table);
+            System.out.println("================以下是處理資料========================");
+            Iterator<String> keys = jsonData.keys();
+            for (Iterator<String> it = keys; it.hasNext(); ) {
+                String key = it.next();
+                JSONObject jsonDataJSONArray = jsonData.getJSONObject(key);
+                Map<String, Object> stringObjectMap = jsonDataJSONArray.toMap();
+                objectObjectHashMap.put(key, stringObjectMap);
+            }
+            Institutional institutional = new Institutional();
+            objectObjectHashMap.forEach(
+                    (k, map) -> {
+                        ArrayList<Object> stringArrayList = new ArrayList<>();
+                        map.forEach((a, value) -> {
+                            stringArrayList.add(value);
+                            objectObjectHashMap2.put(k, stringArrayList);
+                        });
+                    }
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return table;
+        System.out.println(objectObjectHashMap2);
+        return objectObjectHashMap2;
     }
 
     public String getPath() throws IOException {

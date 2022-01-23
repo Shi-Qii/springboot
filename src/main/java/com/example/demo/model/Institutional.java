@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Institutional_investors")
-public class institutional {
+public class Institutional {
 //(
 //    Processing_date   date,
 //    Stock_num         nvarchar(10),
