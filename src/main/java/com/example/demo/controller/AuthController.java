@@ -74,18 +74,18 @@ public class AuthController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		//建立一個jwt 透過認證後的物件
 		String jwt = jwtUtils.generateJwtToken(authentication);
-		
+
 		//從認證後的資訊尋找使用者明細
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
-												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
-												 roles));
+		return ResponseEntity.ok(new JwtResponse(jwt,
+				userDetails.getId(),
+				userDetails.getUsername(),
+				userDetails.getEmail(),
+				roles));
 	}
 
 	//註冊  signUpRequest去判斷註冊的條件
@@ -113,32 +113,32 @@ public class AuthController {
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
 
-		if (strRoles == null) {
-			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(userRole);
-		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
-				case "admin":
-					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
-
-					break;
-				case "mod":
-					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
-
-					break;
-				default:
-					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(userRole);
-				}
-			});
-		}
+//		if (strRoles == null) {
+//			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//			roles.add(userRole);
+//		} else {
+//			strRoles.forEach(role -> {
+//				switch (role) {
+//				case "admin":
+//					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(adminRole);
+//
+//					break;
+//				case "mod":
+//					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(modRole);
+//
+//					break;
+//				default:
+//					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(userRole);
+//				}
+//			});
+//		}
 
 		user.setRoles(roles);
 		//存到資料庫

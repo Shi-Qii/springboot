@@ -1,21 +1,24 @@
 package com.example.demo.model;
 
-import org.springframework.stereotype.Component;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
-@Component
+
 @Entity
-@Table(name = "InstitutionalInvestors")
+@Table(name = "Institutional_investors")
 public class institutional {
-    //    Processing_date   date      not null,
-//    Stock_num         nchar(10) not null,
+//(
+//    Processing_date   date,
+//    Stock_num         nvarchar(10),
 //    Foreign_investors int,
 //    Investment_trust  int,
 //    Dealer            int,
 //    Total_buysell     int,
 //    Market_type       nvarchar(10)
+//)
+
     @Id
 
     private Date Processing_date;
