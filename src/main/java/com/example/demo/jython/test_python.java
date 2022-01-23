@@ -10,7 +10,7 @@ public class test_python {
 
 
     public static void main(String[] args) throws IOException {
-
+        System.out.println("建立develop");
         String par1="Listed_Foreign_Buy_Day";
         String par2="上市";
         String par3="Buy";
