@@ -11,9 +11,9 @@ public class test_python {
 
     public static void main(String[] args) throws IOException {
         System.out.println("建立develop");
-        String par1="Listed_Foreign_Buy_Day";
-        String par2="上市";
-        String par3="Buy";
+        String par1="Ind_Institutional_Investors_Day";
+        String par2="1110";
+        String par3="10";
         String par4="Foreign_investors";
         String par5= "20";
 

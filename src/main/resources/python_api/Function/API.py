@@ -10,20 +10,26 @@
 ###################################################################
 '''
 
+
+#共用模組
 import pandas as pd
 from sqlalchemy import create_engine
-import time
 import sys
 import io
 
 #CMD轉換編碼使用，不可以在jupyter下執行，只能在.py下執行
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+#連線DB
 db = create_engine('mssql+pymssql://sa:password@127.0.0.1:1433/Financial?charset=utf8' ,pool_pre_ping=True) 
 eng = db.connect()
 
 
+
 '''
+#########################################################################
+##                   三大法人  Institutional_investors                  
+#########################################################################
 塞選top30 上市法人買賣超
 抓取最新的日期資訊
 check_code  =>檢查碼
@@ -48,7 +54,7 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
     Institutional_investors_top_SQL="select top 30 \
             b.Processing_date, \
             a.Industry_sector, \
-            a.Stock_num, \
+            trim(a.Stock_num), \
             a.Stock_name, \
             c.Open_price, \
             c.Close_price, \
@@ -104,6 +110,43 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
     df=pd.read_sql(Institutional_investors_top_SQL,con=eng)
     
     #轉換dataframe to json
-    js = df.to_json(orient = 'columns', force_ascii=False)
-    print(check_code,'=',js)
-    return js
+    result = df.to_json(orient = 'columns', force_ascii=False)
+    print(check_code,'=',result)
+    return result
+
+
+
+'''
+#########################################################################
+##                 三大法人  個股Institutional_investors                 
+#########################################################################
+塞選特定期間法人買賣超狀況 
+抓取最新的日期資訊
+stock_num   =>股票代碼
+day         =>天數
+'''
+
+def Individual_stock_Institutional_investors(check_code,stock_num,day):
+
+    #塞選特定期間法人買賣超狀況
+    Individual_stock_Institutional_investors_SQL="select top %s \
+    a.Processing_date, \
+    trim(a.Stock_num), \
+    b.Stock_name, \
+    round((a.Foreign_investors/1000),1) as Foreign_investors, \
+    round((a.Investment_trust/1000),1) as Investment_trust, \
+    round((a.Dealer/1000),1) as Dealer, \
+    round((a.Total_buysell/1000),1) as Total_buysell \
+    from Institutional_investors a,Stock_Category b \
+    where  a.Stock_num=b.Stock_num \
+    and a.Stock_num='%s' \
+    order by a.Processing_date desc;" \
+    %(day,stock_num)
+
+
+    #進DB讀取資料存dataframe
+    df=pd.read_sql(Individual_stock_Institutional_investors_SQL,con=eng)
+    #轉換dataframe to json
+    result = df.to_json(orient = 'columns', force_ascii=False)
+    print(check_code,'=',result)
+    return result

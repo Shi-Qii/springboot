@@ -6,7 +6,6 @@
 ##     日期       |      修改者      |            內容
 ==================================================================
 ##  2022/1/23    |       寶瑞       |            inital
-
 ###################################################################
 '''
 
@@ -23,6 +22,15 @@ buy_sell    =>買超或賣超
 cond        =>特定條件
     ex.Dealer、Investment_trust、Foreign_investors或是組合<Investment_trust+Dealer>
 total_day   =>加總天數預設1天
+
+
+#個股三大法人呼叫方式
+check_code  =>檢查碼
+    ex.代號
+stock_num   =>股票代碼
+    ex.1110
+day         =>天數
+    ex.1,2,3,5
 '''
 
 
@@ -147,5 +155,6 @@ elif sys.argv[1]=='OTC_Total_Buy_Day':
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Total_Sell_Day':
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
-
-
+elif sys.argv[1]=='Ind_Institutional_Investors_Day':
+    #個股三大法人
+    API.Individual_stock_Institutional_investors(sys.argv[1],sys.argv[2], sys.argv[3])
