@@ -29,9 +29,9 @@ public class StockService {
         String path = getPath();
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
-        objectHashMap.put("parameter1", "Listed_Foreign_Buy");
-        objectHashMap.put("parameter2", "上市");
-        objectHashMap.put("parameter3", "buy");
+        objectHashMap.put("parameter1", "Ind_Institutional_Investors_Day");
+        objectHashMap.put("parameter2", "1110");
+        objectHashMap.put("parameter3", "10");
         objectHashMap.put("parameter4", "Foreign_investors");
         objectHashMap.put("parameter5", "20");
 
@@ -76,7 +76,7 @@ public class StockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("我在這"+objectObjectHashMap2);
+        System.out.println(objectObjectHashMap2);
         return objectObjectHashMap2;
     }
 

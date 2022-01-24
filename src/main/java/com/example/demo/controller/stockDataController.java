@@ -3,9 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dao.institutionalJPA;
 import com.example.demo.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,9 +28,9 @@ public class stockDataController {
 
 
 
-    @GetMapping("/api/getStockData")
-    public Map<String, ArrayList<Object>> getStockData() throws IOException {
-        Map<String, ArrayList<Object>> data = stockService.getData();
+    @PostMapping("/api/getStockData")
+    public Map<String, ArrayList<Object>> getStockData(@RequestBody Map<String,Object> map) throws IOException {
+        Map<String, ArrayList<Object>> data = stockService.getData(map);
         return data;
     }
 
