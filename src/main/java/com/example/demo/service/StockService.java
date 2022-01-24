@@ -4,7 +4,6 @@ import com.example.demo.model.Institutional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,15 +22,14 @@ public class StockService {
 //    Institutional institutional;
 
 
-    public Map<String, ArrayList<Object>> getData(@RequestBody Map<String, Object> requestMap) throws IOException {
-        System.out.println("查看map:" + requestMap);
-        String pythonKey = (String) requestMap.get("key");
+    public Map<String, ArrayList<Object>> getData() throws IOException {
+
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String path = getPath();
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
-        objectHashMap.put("parameter1", pythonKey);
+        objectHashMap.put("parameter1", "Ind_Institutional_Investors_Day");
         objectHashMap.put("parameter2", "1110");
         objectHashMap.put("parameter3", "10");
         objectHashMap.put("parameter4", "Foreign_investors");

@@ -35,7 +35,7 @@ day         =>天數
 
 
 #導入API
-import Function.API as API
+import Function.API_new as API
 
 #導入sys
 import sys
@@ -157,4 +157,4 @@ elif sys.argv[1]=='OTC_Total_Sell_Day':
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Ind_Institutional_Investors_Day':
     #個股三大法人
-    API.Individual_stock_institutional_investors(sys.argv[1],sys.argv[2], sys.argv[3])
+    API.Individual_stock_Institutional_investors(sys.argv[1],sys.argv[2], sys.argv[3])

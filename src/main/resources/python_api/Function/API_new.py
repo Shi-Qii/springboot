@@ -110,7 +110,7 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
     df=pd.read_sql(Institutional_investors_top_SQL,con=eng)
     
     #轉換dataframe to json
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     #print(check_code,'=',result)
     print(result)
     return result
@@ -127,7 +127,7 @@ stock_num   =>股票代碼
 day         =>天數
 '''
 
-def Individual_stock_institutional_investors(check_code,stock_num,day):
+def Individual_stock_Institutional_investors(check_code,stock_num,day):
 
     #塞選特定期間法人買賣超狀況
     Individual_stock_Institutional_investors_SQL="select top %s \
@@ -148,7 +148,7 @@ def Individual_stock_institutional_investors(check_code,stock_num,day):
     #進DB讀取資料存dataframe
     df=pd.read_sql(Individual_stock_Institutional_investors_SQL,con=eng)
     #轉換dataframe to json
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     #print(check_code,'=',result)
     print(result)
     return result
@@ -223,7 +223,7 @@ def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num
     df=df[['Stock_num','Stock_name','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
            'Long_earn','Long_earn_last','Growth_long']]
 
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     #print(check_code,'=',result)
     return result
@@ -299,78 +299,7 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
 
     #抓取最大月份，並且重新reset index
     df=df[df['Month']==df['Month'].head(1).values[0]].reset_index()
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     #print(check_code,'=',result)
     #return result
-
-
-
-'''
-#########################################################################
-##                   個股-月營收                    
-#########################################################################
-月營收
-
-check_code  =>檢查碼
-    ex.代號
-stock_num   =>股票代碼
-
-month_range=>月份數
-default=12
-
-'''
-def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
-
-    #取出營收
-    Individual_stock_monthly_revenue_SQL="select trim(a.Stock_num) as Stock_num, \
-    b.Stock_name, \
-    a.Mon_earn, \
-    a.Last_mon_earn, \
-    a.Growth_mon, \
-    a.Last_year_mon_earn, \
-    a.Growth_year, \
-    a.Total_earn, \
-    a.Last_total_earn, \
-    a.Grow_total_earn, \
-    a.Month, \
-    a.Comment \
-    from Monthly_Revenue a left join Stock_Category b \
-    on a.Stock_num=b.Stock_num \
-    where  a.month in ( \
-    select distinct top %s a1.Month \
-    from Monthly_Revenue a1 \
-    order by a1.Month desc) \
-    and a.Stock_num='%s' \
-    order by a.Stock_num,a.month desc; " \
-    %(month_range,stock_num)
-    df=pd.read_sql(Individual_stock_monthly_revenue_SQL,con=eng)
-
-    #取出月股價
-    Price_SQL="select top %s DATEPART(Year, a.Processing_date)-1911 Year, \
-    DATEPART(Month, a.Processing_date) Month, \
-    round(avg(a.close_price),2) Price \
-    from Every_Transaction a \
-    where a.Stock_num='%s' \
-    group by DATEPART(Year, a.Processing_date), DATEPART(Month, a.Processing_date) \
-    order by Year desc , Month desc;" \
-              %(month_range,stock_num)
-    df_price=pd.read_sql_query(Price_SQL,con=eng)
-
-
-
-    #將小於10月份以下補0
-    df_price['Month']=df_price['Month'].apply(lambda x: str(x) if x > 9  else '0'+str(x)  )
-    #轉換成str
-    df_price['Year']=df_price['Year'].apply(lambda x: str(x)  )
-    #合併Year,Month
-    df_price['Month']=df_price['Year']+df_price['Month']
-
-    #合併表格
-    df=pd.merge(df, df_price.iloc[:,1:], on='Month',how='left')
-
-    result = df.to_json(orient = 'columns', force_ascii=False)
-    print(result)
-    #return result
-
-

@@ -11,13 +11,13 @@ public class test_python {
 
     public static void main(String[] args) throws IOException {
         System.out.println("建立develop");
-        String par1="Ind_Institutional_Investors_Day";
-        String par2="1110";
-        String par3="10";
+        String par1="Ind_Monthly_Revenue_Mon";
+        String par2="2330";
+        String par3="2330";
         String par4="Foreign_investors";
         String par5= "20";
 
-        String id = "institutional_investors"+".py"; //到時候從前端傳進來對應的名子
+        String id = "monthly_revenue"+".py"; //到時候從前端傳進來對應的名子
 
         String pyClasspathTemplate = "src/main/resources/python_api/%s";
         String pyFolderClasspathPath = String.format(pyClasspathTemplate, id);
@@ -34,7 +34,7 @@ public class test_python {
             while ((line = in.readLine()) != null) {
 
                 table += line;
-                System.out.println(table);
+             //   System.out.println(table);
             }
             in.close();
             //int re = process.waitFor();
