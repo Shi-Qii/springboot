@@ -32,8 +32,8 @@ public class StockService {
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
         objectHashMap.put("parameter1", pythonKey);
-        objectHashMap.put("parameter2", "1110");
-        objectHashMap.put("parameter3", "10");
+        objectHashMap.put("parameter2", "上市");
+        objectHashMap.put("parameter3", "buy");
         objectHashMap.put("parameter4", "Foreign_investors");
         objectHashMap.put("parameter5", "20");
 
@@ -46,7 +46,8 @@ public class StockService {
                 objectHashMap.get("parameter4"),
                 objectHashMap.get("parameter5"),
         };
-
+        //C:\Users\JeterPc\Desktop\sideproject\springboot\src\main\resources\python_api\institutional_investors.py
+        //C:\Users\JeterPc\Desktop\sideproject\springboot\src\main\resources\python_api\institutional_investors.py
         try {
             Process process = Runtime.getRuntime().exec(arguments);
             InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), Charset.forName("utf-8"));
@@ -78,7 +79,7 @@ public class StockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(objectObjectHashMap2);
+        System.out.println(table);
         return objectObjectHashMap2;
     }
 
