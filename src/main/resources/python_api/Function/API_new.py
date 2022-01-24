@@ -110,7 +110,7 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
     df=pd.read_sql(Institutional_investors_top_SQL,con=eng)
     
     #轉換dataframe to json
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     #print(check_code,'=',result)
     print(result)
     return result
@@ -148,7 +148,7 @@ def Individual_stock_Institutional_investors(check_code,stock_num,day):
     #進DB讀取資料存dataframe
     df=pd.read_sql(Individual_stock_Institutional_investors_SQL,con=eng)
     #轉換dataframe to json
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     #print(check_code,'=',result)
     print(result)
     return result
@@ -223,7 +223,7 @@ def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num
     df=df[['Stock_num','Stock_name','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
            'Long_earn','Long_earn_last','Growth_long']]
 
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     #print(check_code,'=',result)
     return result
@@ -299,7 +299,7 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
 
     #抓取最大月份，並且重新reset index
     df=df[df['Month']==df['Month'].head(1).values[0]].reset_index()
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     #print(check_code,'=',result)
     #return result
