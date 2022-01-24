@@ -11,8 +11,8 @@ public class test_python {
 
     public static void main(String[] args) throws IOException {
         System.out.println("建立develop");
-        String par1="Ind_Monthly_Revenue_Mon";
-        String par2="2330";
+        String par1="Listed_Monthly_Revenue";
+        String par2="上市";
         String par3="2330";
         String par4="Foreign_investors";
         String par5= "20";
