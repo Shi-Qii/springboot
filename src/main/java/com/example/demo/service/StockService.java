@@ -23,7 +23,8 @@ public class StockService {
 //    Institutional institutional;
 
 
-    public Map<String, ArrayList<Object>> getData(@RequestBody Map<String, Object> requestMap) throws IOException {
+//    public Map<String, ArrayList<Object>> getData(@RequestBody Map<String, Object> requestMap) throws IOException {
+    public String getData(@RequestBody Map<String, Object> requestMap) throws IOException {
         System.out.println("查看map:" + requestMap);
         String pythonKey = (String) requestMap.get("key");
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
@@ -57,30 +58,31 @@ public class StockService {
                 table += line;
             }
             in.close();
-            JSONObject jsonData = new JSONObject(table);
-            System.out.println("================以下是處理資料========================");
-            Iterator<String> keys = jsonData.keys();
-            for (Iterator<String> it = keys; it.hasNext(); ) {
-                String key = it.next();
-                JSONObject jsonDataJSONArray = jsonData.getJSONObject(key);
-                Map<String, Object> stringObjectMap = jsonDataJSONArray.toMap();
-                objectObjectHashMap.put(key, stringObjectMap);
-            }
-            Institutional institutional = new Institutional();
-            objectObjectHashMap.forEach(
-                    (k, map) -> {
-                        ArrayList<Object> stringArrayList = new ArrayList<>();
-                        map.forEach((a, value) -> {
-                            stringArrayList.add(value);
-                            objectObjectHashMap2.put(k, stringArrayList);
-                        });
-                    }
-            );
+//            JSONObject jsonData = new JSONObject(table);
+//            System.out.println("================以下是處理資料========================");
+//            Iterator<String> keys = jsonData.keys();
+//            for (Iterator<String> it = keys; it.hasNext(); ) {
+//                String key = it.next();
+//                JSONObject jsonDataJSONArray = jsonData.getJSONObject(key);
+//                Map<String, Object> stringObjectMap = jsonDataJSONArray.toMap();
+//                objectObjectHashMap.put(key, stringObjectMap);
+//            }
+//            Institutional institutional = new Institutional();
+//            objectObjectHashMap.forEach(
+//                    (k, map) -> {
+//                        ArrayList<Object> stringArrayList = new ArrayList<>();
+//                        map.forEach((a, value) -> {
+//                            stringArrayList.add(value);
+//                            objectObjectHashMap2.put(k, stringArrayList);
+//                        });
+//                    }
+//            );
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(table);
-        return objectObjectHashMap2;
+        System.out.println("最後送出"+table);
+//        return objectObjectHashMap2;
+        return table;
     }
 
     public String getPath() throws IOException {

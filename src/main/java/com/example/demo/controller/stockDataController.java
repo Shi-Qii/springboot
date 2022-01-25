@@ -29,8 +29,8 @@ public class stockDataController {
 
 
     @PostMapping("/api/getStockData")
-    public Map<String, ArrayList<Object>> getStockData(@RequestBody Map<String,Object> map) throws IOException {
-        Map<String, ArrayList<Object>> data = stockService.getData(map);
+    public String getStockData(@RequestBody Map<String,Object> map) throws IOException {
+        String data = stockService.getData(map);
         return data;
     }
 
