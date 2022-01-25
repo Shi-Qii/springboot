@@ -10,9 +10,8 @@
 '''
 
 '''
-抓取三大法人資訊，以DB內最新日期為準
+參數:
 
-!!呼叫方式
 check_code  =>檢查碼
     ex.代號
 market_type =>市場別
@@ -21,14 +20,6 @@ buy_sell    =>買超或賣超
     ex.buy=買超  sell=賣超
 cond        =>特定條件
     ex.Dealer、Investment_trust、Foreign_investors或是組合<Investment_trust+Dealer>
-total_day   =>加總天數預設1天
-
-
-#個股三大法人呼叫方式
-check_code  =>檢查碼
-    ex.代號
-stock_num   =>股票代碼
-    ex.1110
 day         =>天數
     ex.1,2,3,5
 '''
@@ -42,119 +33,176 @@ import sys
 
 
 if sys.argv[1]=='Listed_Foreign_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Trust_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Trust_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Dealer_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Foreign_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Foreign_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Trust_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Trust_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Dealer_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Dealer_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Trust_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Trust_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Trust_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Trust_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Total_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Total_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Foreign_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Foreign_Dealer_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Foreign_Trust_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Foreign_Trust_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Trust_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Trust_Dealer_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Total_Buy':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='OTC_Total_Sell':
+    # check_code , market_type , buy_sell , cond
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4])
 elif sys.argv[1]=='Listed_Foreign_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Foreign_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Trust_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Trust_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Dealer_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Foreign_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Foreign_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Trust_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Trust_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Dealer_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Foreign_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Foreign_Dealer_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Foreign_Trust_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Foreign_Trust_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Trust_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Trust_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Total_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Listed_Total_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Foreign_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Foreign_Dealer_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Foreign_Trust_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Foreign_Trust_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Trust_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Trust_Dealer_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Total_Buy_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='OTC_Total_Sell_Day':
+    # check_code , market_type , buy_sell , cond ,day
     API.Institutional_investors_top(sys.argv[1],sys.argv[2], sys.argv[3] ,sys.argv[4] ,sys.argv[5])
 elif sys.argv[1]=='Ind_Institutional_Investors_Day':
-    #個股三大法人
+    # check_code , stock_num ,day
     API.Individual_stock_institutional_investors(sys.argv[1],sys.argv[2], sys.argv[3])
