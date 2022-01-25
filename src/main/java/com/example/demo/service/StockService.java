@@ -26,15 +26,17 @@ public class StockService {
 //    public Map<String, ArrayList<Object>> getData(@RequestBody Map<String, Object> requestMap) throws IOException {
     public String getData(@RequestBody Map<String, Object> requestMap) throws IOException {
         System.out.println("查看map:" + requestMap);
-        String pythonKey = (String) requestMap.get("key");
+        String pythonKey1 = (String) requestMap.get("key1");
+        String pythonKey2 = (String) requestMap.get("key2");
+        String pythonKey3 = (String) requestMap.get("key3");
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String path = getPath();
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
-        objectHashMap.put("parameter1", pythonKey);
-        objectHashMap.put("parameter2", "上市");
-        objectHashMap.put("parameter3", "buy");
+        objectHashMap.put("parameter1", pythonKey1);
+        objectHashMap.put("parameter2", pythonKey2);
+        objectHashMap.put("parameter3", pythonKey3);
         objectHashMap.put("parameter4", "Foreign_investors");
         objectHashMap.put("parameter5", "20");
 

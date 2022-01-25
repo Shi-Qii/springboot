@@ -30,7 +30,7 @@ public class stockDataController {
 
     @PostMapping("/api/getStockData")
     public String getStockData(@RequestBody Map<String,Object> map) throws IOException {
-        String data = stockService.getData(map);
+        String data = stockService.getData((Map<String, Object>) map.get("key"));
         return data;
     }
 
