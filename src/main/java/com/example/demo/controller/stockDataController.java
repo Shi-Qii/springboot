@@ -1,20 +1,21 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.institutionalJPA;
 import com.example.demo.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Map;
 
 @CrossOrigin(origins = {"http://localhost:8080"})
 @RestController
 public class stockDataController {
 
-    @Autowired
-    institutionalJPA jpa;
+//    @Autowired
+//    institutionalJPA jpa;
 
     @Autowired
     StockService stockService;
