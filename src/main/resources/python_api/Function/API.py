@@ -426,3 +426,151 @@ def Monthly_revenue(check_code,market_type):
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     #return result
+
+
+
+'''
+#########################################################################
+##                   上市、上櫃大盤指數                    
+#########################################################################
+大盤指數
+
+day_range  =>天數
+    default=100
+
+'''
+
+def TWSE_index(check_code,day_range=100):
+    TWSE_index_SQL="select top %s \
+    a.processing_date, \
+    a.High_Price, \
+    a.Low_Price, \
+    a.Open_Price, \
+    a.Close_Price, \
+    a.Adj_Close_Price \
+    from TWSE_Index a \
+    order by processing_date desc; " \
+                   %(day_range)
+
+    df=pd.read_sql(TWSE_index_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+
+def OTC_index(check_code,day_range=100):
+    OTC_index_SQL="select top %s \
+    a.processing_date, \
+    a.High_Price, \
+    a.Low_Price, \
+    a.Open_Price, \
+    a.Close_Price \
+    from OTC_Index a \
+    order by processing_date desc; " \
+                  %(day_range)
+
+    df=pd.read_sql(OTC_index_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+
+
+'''
+#########################################################################
+##                   上市、上櫃各類股指數                    
+#########################################################################
+各類股指數
+
+day_range  =>天數
+    default=100
+
+'''
+
+def TWSE_Category_index(check_code,day_range=100):
+    TWSE_Category_index_SQL="select \
+    a.Processing_date, \
+    a.Index_name, \
+    a.Close_price, \
+    a.Num_share, \
+    a.Cash_share, \
+    a.Account_num, \
+    a.Range_index, \
+    a.Tran_weight \
+    from Category_Index a \
+    where a.Market_type='上市' \
+    and  a.processing_date in  \
+            (select distinct top %s processing_date  \
+            from Institutional_investors b \
+            where b.Market_type='上市'  \
+            order by b.processing_date desc ) \
+    order by a.Processing_date desc;" \
+                            %(day_range)
+
+    df=pd.read_sql(TWSE_Category_index_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+
+def OTC_Category_index(check_code,day_range=100):
+    OTC_Category_index_SQL="select \
+    a.Processing_date, \
+    a.Index_name, \
+    a.Close_price, \
+    a.Num_share, \
+    a.Cash_share, \
+    a.Account_num, \
+    a.Range_index, \
+    a.Tran_weight \
+    from Category_Index a \
+    where a.Market_type='上櫃' \
+    and  a.processing_date in  \
+            (select distinct top %s processing_date  \
+            from Institutional_investors b \
+            where b.Market_type='上櫃'  \
+            order by b.processing_date desc ) \
+    order by a.Processing_date desc;" \
+                           %(day_range)
+
+    df=pd.read_sql(OTC_Category_index_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   上市、上櫃指數三大法人                    
+#########################################################################
+各類股指數
+
+day_range  =>天數
+    default=100
+
+'''
+
+def TWSE_Institutional_investors(check_code,day_range=100):
+    TWSE_Institutional_investors_SQL="select top %s \
+                    a.Processing_date, \
+                    a.Foreign_investors, \
+                    a.Investment_trust, \
+                    a.Dealer, \
+                    a.Total_buysell \
+                    from Institutional_investors_TWSE a \
+                    order by Processing_date desc " \
+                                     %(day_range)
+
+    df=pd.read_sql(TWSE_Institutional_investors_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+def OTC_Institutional_investors(check_code,day_range=100):
+    OTC_Institutional_investors_SQL="select top %s \
+                    a.Processing_date, \
+                    a.Foreign_investors, \
+                    a.Investment_trust, \
+                    a.Dealer, \
+                    a.Total_buysell \
+                    from Institutional_investors_OTC a \
+                    order by Processing_date desc " \
+                                    %(day_range)
+
+    df=pd.read_sql(OTC_Institutional_investors_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
