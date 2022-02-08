@@ -34,9 +34,15 @@ if sys.argv[1]=='Ind_Monthly_Revenue_Short_Long':
 elif sys.argv[1]=='Listed_Monthly_Revenue_Short_Long':
     # check_code , market_type
     API.Monthly_revenue_short_long( sys.argv[1], sys.argv[2])
+elif sys.argv[1]=='OTC_Monthly_Revenue_Short_Long':
+    # check_code , market_type
+    API.Monthly_revenue_short_long( sys.argv[1], sys.argv[2])
 elif sys.argv[1]=='Ind_Monthly_Revenue_Mon':
     #check_code , stock_num
     API.Individual_stock_monthly_revenue( sys.argv[1], sys.argv[2])
 elif sys.argv[1]=='Listed_Monthly_Revenue':
+    # check_code , market_type
+    API.Monthly_revenue( sys.argv[1], sys.argv[2])
+elif sys.argv[1]=='OTC_Monthly_Revenue':
     # check_code , market_type
     API.Monthly_revenue( sys.argv[1], sys.argv[2])

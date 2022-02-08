@@ -6,7 +6,7 @@
 ##     日期       |      修改者      |            內容
 ==================================================================
 ##  2022/1/23    |       寶瑞       |  新增Institutional_investors_top
-
+##  2022/1/29    |       寶瑞       |  新增Institutional_investors_top
 ###################################################################
 '''
 
@@ -171,25 +171,25 @@ long_month    =>長期計算幾個月份 預設12
 short_month   =>短期計算幾個月份  預設3
 
 '''
-def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num,long_month=12,short_month=3):
+def Individual_stock_monthly_revenue_short_long(check_code,stock_num,long_month=12,short_month=3):
 
     long_month_tmp=long_month*2
-    Individual_stock_Ronthly_revenue_short_long_SQL="select a.Stock_num, \
+    Individual_stock_Ronthly_revenue_short_long_SQL="select trim(a.Stock_num) as Stock_num, \
         b.Stock_name, \
+        trim(str(a.Year)) Year, \
+        trim(str(a.Month)) Month, \
         a.Mon_earn, \
         a.Last_year_mon_earn, \
-        a.Growth_year, \
-        a.Month \
+        a.Growth_year \
         from Monthly_Revenue a left join Stock_Category b \
         on a.Stock_num=b.Stock_num \
-        where  a.month in ( \
-        select distinct top %s a1.Month \
+        where  CONCAT(a.Year, a.Month/10) in ( \
+        select distinct top %s CONCAT(a1.year, a1.Month/10) \
         from Monthly_Revenue a1 \
-        order by a1.Month desc) \
+        order by CONCAT(a1.year, a1.Month/10) desc) \
         and a.Stock_num='%s' \
-        and b.Market_type='%s' \
-        order by a.Stock_num,a.month desc;" \
-        %(long_month_tmp,stock_num,market_type)
+        order by a.Stock_num desc,a.year desc,a.Month desc;" \
+                                                    %(long_month_tmp,stock_num)
     df=pd.read_sql(Individual_stock_Ronthly_revenue_short_long_SQL,con=eng)
 
     #長期 12個月  短期 3個月
@@ -220,13 +220,12 @@ def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num
     df['Long_earn_last']=tmp_long_last
     df['Growth_long']=round((tmp_long/tmp_long_last-1)*100,1)
 
-    df=df[['Stock_num','Stock_name','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
+    df=df[['Stock_num','Stock_name','Year','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
            'Long_earn','Long_earn_last','Growth_long']]
 
-    result = df.to_json(orient = 'records', force_ascii=False)
+    result = df.to_json(orient = 'columns', force_ascii=False)
     print(result)
-    #print(check_code,'=',result)
-    return result
+
 
 '''
 #########################################################################
@@ -248,21 +247,22 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
 
     long_month_tmp=long_month*2
 
-    Individual_stock_Ronthly_revenue_short_long_SQL="select a.Stock_num, \
+    Individual_stock_Ronthly_revenue_short_long_SQL="select trim(a.Stock_num) as Stock_num, \
         b.Stock_name, \
+        trim(str(a.Year)) Year, \
+        trim(str(a.Month)) Month, \
         a.Mon_earn, \
         a.Last_year_mon_earn, \
-        a.Growth_year, \
-        a.Month \
+        a.Growth_year \
         from Monthly_Revenue a left join Stock_Category b \
         on a.Stock_num=b.Stock_num \
-        where  a.month in ( \
-        select distinct top %s a1.Month \
+        where  CONCAT(a.Year, a.Month/10) in ( \
+        select distinct top %s CONCAT(a1.year, a1.Month/10) \
         from Monthly_Revenue a1 \
-        order by a1.Month desc) \
+        order by CONCAT(a1.year, a1.Month/10) desc) \
         and b.Market_type='%s' \
-        order by a.Stock_num,a.month desc;" \
-        %(long_month_tmp,market_type)
+        order by a.Stock_num desc,a.year desc,a.Month desc;" \
+                                                    %(long_month_tmp,market_type)
 
     df=pd.read_sql(Individual_stock_Ronthly_revenue_short_long_SQL,con=eng)
 
@@ -294,16 +294,14 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
     df['Long_earn_last']=tmp_long_last
     df['Growth_long']=round((tmp_long/tmp_long_last-1)*100,1)
 
-    df=df[['Stock_num','Stock_name','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
+    df=df[['Stock_num','Stock_name','Year','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
            'Long_earn','Long_earn_last','Growth_long']]
 
     #抓取最大月份，並且重新reset index
     df=df[df['Month']==df['Month'].head(1).values[0]].reset_index()
-    result = df.to_json(orient = 'records', force_ascii=False)
+    result = df.to_json(orient = 'columns', force_ascii=False)
     print(result)
-    #print(check_code,'=',result)
-    #return result
-
+    return result
 
 
 '''
@@ -325,6 +323,8 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     #取出營收
     Individual_stock_monthly_revenue_SQL="select trim(a.Stock_num) as Stock_num, \
     b.Stock_name, \
+    a.Year, \
+    a.Month, \
     a.Mon_earn, \
     a.Last_mon_earn, \
     a.Growth_mon, \
@@ -333,17 +333,16 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     a.Total_earn, \
     a.Last_total_earn, \
     a.Grow_total_earn, \
-    a.Month, \
     a.Comment \
     from Monthly_Revenue a left join Stock_Category b \
     on a.Stock_num=b.Stock_num \
-    where  a.month in ( \
-    select distinct top %s a1.Month \
+    where  CONCAT(a.Year, a.Month/10) in ( \
+    select distinct top %s CONCAT(a1.year, a1.Month/10) \
     from Monthly_Revenue a1 \
-    order by a1.Month desc) \
+    order by CONCAT(a1.year, a1.Month/10) desc ) \
     and a.Stock_num='%s' \
     order by a.Stock_num,a.month desc; " \
-    %(month_range,stock_num)
+                                         %(month_range,stock_num)
     df=pd.read_sql(Individual_stock_monthly_revenue_SQL,con=eng)
 
     #取出月股價
@@ -358,16 +357,8 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     df_price=pd.read_sql_query(Price_SQL,con=eng)
 
 
-
-    #將小於10月份以下補0
-    df_price['Month']=df_price['Month'].apply(lambda x: str(x) if x > 9  else '0'+str(x)  )
-    #轉換成str
-    df_price['Year']=df_price['Year'].apply(lambda x: str(x)  )
-    #合併Year,Month
-    df_price['Month']=df_price['Year']+df_price['Month']
-
     #合併表格
-    df=pd.merge(df, df_price.iloc[:,1:], on='Month',how='left')
+    df=pd.merge(df, df_price, on=['Year','Month'],how='left')
 
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
@@ -392,6 +383,8 @@ def Monthly_revenue(check_code,market_type):
 
     Monthly_revenue_SQL="select trim(a.Stock_num) as Stock_num, \
         b.Stock_name, \
+        trim(str(a.Year)) Year, \
+        trim(str(a.Month)) Month, \
         a.Mon_earn, \
         a.Last_mon_earn, \
         a.Growth_mon, \
@@ -400,14 +393,13 @@ def Monthly_revenue(check_code,market_type):
         a.Total_earn, \
         a.Last_total_earn, \
         a.Grow_total_earn, \
-        a.Month, \
         a.Comment \
         from Monthly_Revenue a left join Stock_Category b \
         on a.Stock_num=b.Stock_num \
-        where  a.month in ( \
-        select distinct top 1 a1.Month \
+        where  CONCAT(a.Year, a.Month/10) in ( \
+        select distinct top 1 CONCAT(a1.year, a1.Month/10) \
         from Monthly_Revenue a1 \
-        order by a1.Month desc) \
+        order by CONCAT(a1.year, a1.Month/10) desc ) \
         and b.Market_type='%s' \
         order by a.Stock_num,a.month desc; " \
                         %(market_type)
@@ -434,4 +426,3 @@ def Monthly_revenue(check_code,market_type):
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     #return result
-

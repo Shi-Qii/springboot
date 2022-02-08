@@ -25,6 +25,8 @@ public class StockService {
         String pythonKey1 = (String) requestMap.get("key1");
         String pythonKey2 = (String) requestMap.get("key2");
         String pythonKey3 = (String) requestMap.get("key3");
+        String pythonKey4 = (String) requestMap.get("key4");
+        String pythonKey5 = (String) requestMap.get("key5");
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String path = getPath();
@@ -33,8 +35,8 @@ public class StockService {
         objectHashMap.put("parameter1", pythonKey1);
         objectHashMap.put("parameter2", pythonKey2);
         objectHashMap.put("parameter3", pythonKey3);
-        objectHashMap.put("parameter4", "Foreign_investors");
-        objectHashMap.put("parameter5", "20");
+        objectHashMap.put("parameter4", pythonKey4);
+        objectHashMap.put("parameter5", pythonKey5);
 
         String[] arguments = new String[]{
                 "python",
