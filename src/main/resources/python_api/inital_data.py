@@ -17,6 +17,6 @@ import Function.API as API
 import sys
 
 
-if sys.argv[1]=='Stock_Category':
+if sys.argv[1]=='Stock_Num_Name':
     # check_code , market_type , buy_sell , cond
-    API.Stock_Category( sys.argv[1])
+    API.Stock_Num_Name( sys.argv[1])
