@@ -141,7 +141,7 @@ def Individual_stock_institutional_investors(check_code,stock_num,day):
     from Institutional_investors a,Stock_Category b \
     where  a.Stock_num=b.Stock_num \
     and a.Stock_num='%s' \
-    order by a.Processing_date desc;" \
+    order by a.Processing_date desc ;" \
     %(day,stock_num)
 
 
@@ -572,5 +572,24 @@ def OTC_Institutional_investors(check_code,day_range=100):
                                     %(day_range)
 
     df=pd.read_sql(OTC_Institutional_investors_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+
+'''
+#########################################################################
+##                   上市、上櫃股票 代號+名稱+市場別                   
+#########################################################################
+各類股指數
+
+
+'''
+
+def Stock_Num_Name(check_code):
+    Stock_Num_Name_SQL="select a.Stock_num+'-'+a.Stock_name+'('+a.Market_type+')' as Stock_nm\
+                    from Stock_Category a \
+                    order by a.Stock_num asc " \
+
+    df=pd.read_sql(Stock_Num_Name_SQL,con=eng)
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
