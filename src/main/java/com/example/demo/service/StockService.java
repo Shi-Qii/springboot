@@ -15,11 +15,6 @@ import java.util.Map;
 @Service
 public class StockService {
 
-//    @Autowired
-//    Institutional institutional;
-
-
-//    public Map<String, ArrayList<Object>> getData(@RequestBody Map<String, Object> requestMap) throws IOException {
     public String getData(@RequestBody Map<String, Object> requestMap) throws IOException {
         System.out.println("查看map:" + requestMap);
         String pythonKey1 = (String) requestMap.get("key1");
@@ -84,9 +79,43 @@ public class StockService {
 //        return objectObjectHashMap2;
         return table;
     }
+    public String getInitData() throws IOException {
 
+        String path = getInitPath();
+        String table = "";
+
+        String[] arguments = new String[]{
+                "python",
+                path,
+                "Stock_Num_name"
+        };
+
+        try {
+            Process process = Runtime.getRuntime().exec(arguments);
+            InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), Charset.forName("utf-8"));
+            BufferedReader in = new BufferedReader(inputStreamReader);
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                table += line;
+
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.print("最後送出:"+table);
+
+        return table;
+    }
     public String getPath() throws IOException {
         String id = "institutional_investors" + ".py"; //到時候從前端傳進來對應的名子
+        String pyClasspathTemplate = "src/main/resources/python_api/%s";
+        String pyFolderClasspathPath = String.format(pyClasspathTemplate, id);
+        String filePath = new File(pyFolderClasspathPath).getAbsolutePath();
+        return filePath;
+    }
+    public String getInitPath() throws IOException {
+        String id = "inital_data" + ".py"; //到時候從前端傳進來對應的名子
         String pyClasspathTemplate = "src/main/resources/python_api/%s";
         String pyFolderClasspathPath = String.format(pyClasspathTemplate, id);
         String filePath = new File(pyFolderClasspathPath).getAbsolutePath();
