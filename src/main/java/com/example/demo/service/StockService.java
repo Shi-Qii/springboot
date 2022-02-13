@@ -87,7 +87,7 @@ public class StockService {
         String[] arguments = new String[]{
                 "python",
                 path,
-                "Stock_Num_name"
+                "Stock_Num_Name"
         };
 
         try {
@@ -103,7 +103,7 @@ public class StockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.print("最後送出:"+table);
+        System.out.print("最後送出:"+table+"\n");
         System.out.println("--------------end-----------");
         return table;
     }
