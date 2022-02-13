@@ -80,7 +80,7 @@ public class StockService {
         return table;
     }
     public String getInitData() throws IOException {
-
+        System.out.println("--------------開始初始化-----------");
         String path = getInitPath();
         String table = "";
 
@@ -104,7 +104,7 @@ public class StockService {
             e.printStackTrace();
         }
         System.out.print("最後送出:"+table);
-
+        System.out.println("--------------end-----------");
         return table;
     }
     public String getPath() throws IOException {

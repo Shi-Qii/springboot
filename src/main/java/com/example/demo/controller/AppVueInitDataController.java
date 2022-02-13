@@ -22,7 +22,6 @@ public class AppVueInitDataController {
     @GetMapping("/api/getAppVueInitData")
     public String getStockData() throws IOException {
         String data = stockService.getInitData();
-        System.out.println("");
         return data;
     }
 
