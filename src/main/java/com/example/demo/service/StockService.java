@@ -24,7 +24,8 @@ public class StockService {
         String pythonKey5 = (String) requestMap.get("key5");
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
-        String path = getPath();
+        String id = requestMap.get("idName").toString() + ".py";
+        String path = getPath(id);
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
         objectHashMap.put("parameter1", pythonKey1);
@@ -107,10 +108,10 @@ public class StockService {
         System.out.println("--------------end-----------");
         return table;
     }
-    public String getPath() throws IOException {
-        String id = "institutional_investors" + ".py"; //到時候從前端傳進來對應的名子
+    public String getPath(String idName) throws IOException {
+       // String id = "institutional_investors" + ".py"; //到時候從前端傳進來對應的名子
         String pyClasspathTemplate = "src/main/resources/python_api/%s";
-        String pyFolderClasspathPath = String.format(pyClasspathTemplate, id);
+        String pyFolderClasspathPath = String.format(pyClasspathTemplate, idName);
         String filePath = new File(pyFolderClasspathPath).getAbsolutePath();
         return filePath;
     }
