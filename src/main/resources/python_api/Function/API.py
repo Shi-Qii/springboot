@@ -56,10 +56,10 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
             a.Industry_sector, \
             trim(a.Stock_num) as Stock_num, \
             a.Stock_name, \
-            c.Open_price, \
-            c.Close_price, \
+            b.Open_price, \
+            b.Close_price, \
             round(b.Close_price-c.Close_price,2) as Up_down, \
-            round((b.Close_price-c.Close_price)/c.Close_price,2) as Up_down_pct, \
+            round(((b.Close_price-c.Close_price)/c.Close_price)*100,3) as Up_down_pct, \
             a.Foreign_investors, \
             a.Investment_trust, \
             a.Dealer, \
