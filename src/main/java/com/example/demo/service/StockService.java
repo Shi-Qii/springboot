@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.service.Interface_type.Stock_useCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -13,10 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class StockService {
+public class StockService implements Stock_useCategory {
+    private final Logger log = LoggerFactory.getLogger(Stock_useCategory.class);
 
     public String getData(@RequestBody Map<String, Object> requestMap) throws IOException {
-        System.out.println("查看map:" + requestMap);
+        
+        log.info("查看map:" + requestMap);
         String pythonKey1 = (String) requestMap.get("key1");
         String pythonKey2 = (String) requestMap.get("key2");
         String pythonKey3 = (String) requestMap.get("key3");
@@ -25,6 +30,7 @@ public class StockService {
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String id = requestMap.get("idName").toString() + ".py";
+        UseInstitutionalInvestors(id);
         String path = getPath(id);
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
@@ -55,7 +61,7 @@ public class StockService {
             }
             in.close();
 //            JSONObject jsonData = new JSONObject(table);
-//            System.out.println("================以下是處理資料========================");
+//            log.info("================以下是處理資料========================");
 //            Iterator<String> keys = jsonData.keys();
 //            for (Iterator<String> it = keys; it.hasNext(); ) {
 //                String key = it.next();
@@ -76,12 +82,14 @@ public class StockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("最後送出"+table);
+
+        log.info("最後送出" + table);
 //        return objectObjectHashMap2;
         return table;
     }
+
     public String getInitData() throws IOException {
-        System.out.println("--------------開始初始化-----------");
+        log.info("--------------開始初始化-----------");
         String path = getInitPath();
         String table = "";
 
@@ -104,22 +112,30 @@ public class StockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.print("最後送出:"+table+"\n");
-        System.out.println("--------------end-----------");
+        log.info("最後送出:" + table + "\n");
+        log.info("--------------end-----------");
         return table;
     }
+
     public String getPath(String idName) throws IOException {
-       // String id = "institutional_investors" + ".py"; //到時候從前端傳進來對應的名子
+        // String id = "institutional_investors" + ".py"; //到時候從前端傳進來對應的名子
         String pyClasspathTemplate = "src/main/resources/python_api/%s";
         String pyFolderClasspathPath = String.format(pyClasspathTemplate, idName);
         String filePath = new File(pyFolderClasspathPath).getAbsolutePath();
         return filePath;
     }
+
     public String getInitPath() throws IOException {
         String id = "inital_data" + ".py"; //到時候從前端傳進來對應的名子
         String pyClasspathTemplate = "src/main/resources/python_api/%s";
         String pyFolderClasspathPath = String.format(pyClasspathTemplate, id);
         String filePath = new File(pyFolderClasspathPath).getAbsolutePath();
         return filePath;
+    }
+
+
+    @Override
+    public void UseInstitutionalInvestors(String name) {
+        log.info("call__" + name);
     }
 }
