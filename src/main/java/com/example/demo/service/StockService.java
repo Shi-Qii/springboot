@@ -83,7 +83,7 @@ public class StockService implements Stock_useCategory {
             e.printStackTrace();
         }
 
-        log.debug("results:" + table);
+        log.info("results:" + table);
 //        return objectObjectHashMap2;
         return table;
     }
