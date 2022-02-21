@@ -20,8 +20,8 @@ public class StockService implements Stock_useCategory {
     private final Logger log = LoggerFactory.getLogger(Stock_useCategory.class);
 
     public String getData(@RequestBody Map<String, Object> requestMap) throws IOException {
-        
-        log.info("查看map:" + requestMap);
+
+        log.info("front end params:" + requestMap);
         String pythonKey1 = (String) requestMap.get("key1");
         String pythonKey2 = (String) requestMap.get("key2");
         String pythonKey3 = (String) requestMap.get("key3");
@@ -30,7 +30,7 @@ public class StockService implements Stock_useCategory {
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String id = requestMap.get("idName").toString() + ".py";
-        UseInstitutionalInvestors(id);
+        UseInstitutionalInvestors(pythonKey1);
         String path = getPath(id);
         String table = "";
         HashMap<String, String> objectHashMap = new HashMap<>();
@@ -83,7 +83,7 @@ public class StockService implements Stock_useCategory {
             e.printStackTrace();
         }
 
-        log.info("最後送出" + table);
+        log.debug("results:" + table);
 //        return objectObjectHashMap2;
         return table;
     }
@@ -136,6 +136,48 @@ public class StockService implements Stock_useCategory {
 
     @Override
     public void UseInstitutionalInvestors(String name) {
-        log.info("call__" + name);
+        String rename = name;
+        String format = "";
+        switch (rename) {
+            case "Listed_Foreign_Buy":
+                format = "上市外資買超";
+                break;
+            case "Listed_Foreign_Sell":
+                format = "上市外資賣超";
+                break;
+            case "Listed_Trust_Buy":
+                format = "上市投信買超";
+                break;
+            case "Listed_Trust_Sell":
+                format = "上市投信賣超";
+                break;
+            case "Listed_Dealer_Buy":
+                format = "上市自營買超";
+                break;
+            case "Listed_Dealer_Sell":
+                format = "上市自營賣超";
+                break;
+            case "Listed_Foreign_Dealer_Buy":
+                format = "上市外資+自營買超";
+                break;
+            case "Listed_Foreign_Dealer_Sell":
+                format = "上市外資+自營賣超";
+                break;
+            case "Listed_Foreign_Trust_Buy":
+                format = "上市外資+投信買超";
+                break;
+            case "Listed_Foreign_Trust_Sell":
+                format = "上市外資+投信賣超";
+                break;
+            case "Listed_Trust_Dealer_Buy":
+                format = "上市自營+投信買超";
+                break;
+            case "Listed_Trust_Dealer_Sell":
+                format = "上市自營+投信賣超";
+                break;
+
+
+        }
+        log.info("using:" + format);
     }
 }
