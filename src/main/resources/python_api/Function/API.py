@@ -353,7 +353,7 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     where a.Stock_num='%s' \
     group by DATEPART(Year, a.Processing_date), DATEPART(Month, a.Processing_date) \
     order by Year desc , Month desc;" \
-              %(month_range,stock_num)
+              %(month_range+1,stock_num)
     df_price=pd.read_sql_query(Price_SQL,con=eng)
 
 
