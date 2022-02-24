@@ -342,7 +342,7 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     order by CONCAT(a1.year, a1.Month/10) desc ) \
     and a.Stock_num='%s' \
     order by a.Stock_num,a.month desc; " \
-                                         %(month_range,stock_num)
+    %(month_range,stock_num)
     df=pd.read_sql(Individual_stock_monthly_revenue_SQL,con=eng)
 
     #取出月股價
@@ -353,7 +353,7 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     where a.Stock_num='%s' \
     group by DATEPART(Year, a.Processing_date), DATEPART(Month, a.Processing_date) \
     order by Year desc , Month desc;" \
-              %(month_range+1,stock_num)
+    %(int(month_range)+1,stock_num)
     df_price=pd.read_sql_query(Price_SQL,con=eng)
 
 
