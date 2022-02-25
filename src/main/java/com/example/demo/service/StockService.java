@@ -30,6 +30,7 @@ public class StockService implements Stock_useCategory {
         HashMap<String, Map<String, Object>> objectObjectHashMap = new HashMap<>();
         HashMap<String, ArrayList<Object>> objectObjectHashMap2 = new HashMap<>();
         String id = requestMap.get("idName").toString() + ".py";
+        log.info("id:" + id);
         UseInstitutionalInvestors(pythonKey1);
         String path = getPath(id);
         String table = "";
@@ -60,25 +61,7 @@ public class StockService implements Stock_useCategory {
                 table += line;
             }
             in.close();
-//            JSONObject jsonData = new JSONObject(table);
-//            log.info("================以下是處理資料========================");
-//            Iterator<String> keys = jsonData.keys();
-//            for (Iterator<String> it = keys; it.hasNext(); ) {
-//                String key = it.next();
-//                JSONObject jsonDataJSONArray = jsonData.getJSONObject(key);
-//                Map<String, Object> stringObjectMap = jsonDataJSONArray.toMap();
-//                objectObjectHashMap.put(key, stringObjectMap);
-//            }
-//            Institutional institutional = new Institutional();
-//            objectObjectHashMap.forEach(
-//                    (k, map) -> {
-//                        ArrayList<Object> stringArrayList = new ArrayList<>();
-//                        map.forEach((a, value) -> {
-//                            stringArrayList.add(value);
-//                            objectObjectHashMap2.put(k, stringArrayList);
-//                        });
-//                    }
-//            );
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,6 +122,9 @@ public class StockService implements Stock_useCategory {
         String rename = name;
         String format = "";
         switch (rename) {
+            case "Ind_Monthly_Revenue_Mon":
+                format = "月營收";
+                break;
             case "Listed_Foreign_Buy":
                 format = "上市外資買超";
                 break;
@@ -175,6 +161,7 @@ public class StockService implements Stock_useCategory {
             case "Listed_Trust_Dealer_Sell":
                 format = "上市自營+投信賣超";
                 break;
+
 
 
         }
