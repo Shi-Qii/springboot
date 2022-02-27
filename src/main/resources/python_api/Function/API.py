@@ -341,7 +341,7 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     from Monthly_Revenue a1 \
     order by CONCAT(a1.year, a1.Month/10) desc ) \
     and a.Stock_num='%s' \
-    order by a.Stock_num,a.month desc; " \
+    order by a.Stock_num,a.year desc,a.month desc ; " \
     %(month_range,stock_num)
     df=pd.read_sql(Individual_stock_monthly_revenue_SQL,con=eng)
 
@@ -352,7 +352,7 @@ def Individual_stock_monthly_revenue(check_code,stock_num,month_range=12):
     from Every_Transaction a \
     where a.Stock_num='%s' \
     group by DATEPART(Year, a.Processing_date), DATEPART(Month, a.Processing_date) \
-    order by Year desc , Month desc;" \
+    order by Year desc , Month desc ;" \
     %(int(month_range)+1,stock_num)
     df_price=pd.read_sql_query(Price_SQL,con=eng)
 
