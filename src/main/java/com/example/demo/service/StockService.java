@@ -125,6 +125,9 @@ public class StockService implements Stock_useCategory {
             case "Ind_Monthly_Revenue_Mon":
                 format = "月營收";
                 break;
+            case "Ind_Institutional_Investors_Day":
+                format = "法人";
+                break;
             case "Listed_Foreign_Buy":
                 format = "上市外資買超";
                 break;
