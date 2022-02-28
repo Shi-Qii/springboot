@@ -223,7 +223,7 @@ def Individual_stock_monthly_revenue_short_long(check_code,stock_num,long_month=
     df=df[['Stock_num','Stock_name','Year','Month','Mon_earn','Last_year_mon_earn','Growth_year','Short_earn','Short_earn_last','Growth_short', \
            'Long_earn','Long_earn_last','Growth_long']]
 
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
 
@@ -262,7 +262,7 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
         order by CONCAT(a1.year, a1.Month/10) desc) \
         and b.Market_type='%s' \
         order by a.Stock_num desc,a.year desc,a.Month desc;" \
-                                                    %(long_month_tmp,market_type)
+        %(long_month_tmp,market_type)
 
     df=pd.read_sql(Individual_stock_Ronthly_revenue_short_long_SQL,con=eng)
 
@@ -299,7 +299,7 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
 
     #抓取最大月份，並且重新reset index
     df=df[df['Month']==df['Month'].head(1).values[0]].reset_index()
-    result = df.to_json(orient = 'columns', force_ascii=False)
+    result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     return result
 
