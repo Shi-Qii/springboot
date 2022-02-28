@@ -261,7 +261,7 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
         from Monthly_Revenue a1 \
         order by CONCAT(a1.year, a1.Month/10) desc) \
         and b.Market_type='%s' \
-        order by a.Stock_num desc,a.year desc,a.Month desc;" \
+        order by a.Stock_num asc,a.year desc,a.Month desc;" \
         %(long_month_tmp,market_type)
 
     df=pd.read_sql(Individual_stock_Ronthly_revenue_short_long_SQL,con=eng)
