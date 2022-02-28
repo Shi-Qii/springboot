@@ -298,7 +298,7 @@ def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=
            'Long_earn','Long_earn_last','Growth_long']]
 
     #抓取最大月份，並且重新reset index
-    df=df[df['Month']==df['Month'].head(1).values[0]].reset_index()
+    df=df[(df['Month']==df['Month'].head(1).values[0]) & (df['Year']==df['Year'].head(1).values[0])].reset_index()
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     return result
