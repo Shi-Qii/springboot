@@ -82,7 +82,7 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
                     round((a2.Investment_trust/1000),1) as Investment_trust,  \
                     round((a2.Dealer/1000),1) as Dealer,  \
                     round((a2.Total_buysell/1000),1) as Total_buysell  \
-                from Institutional_investors a2 left join Stock_Category b2\
+                from Institutional_investors a2 left join Stock_Category b2 \
                 on a2.Stock_num=b2.Stock_num \
                 where  b2.Market_type='%s'  \
                 and  a2.processing_date in \
@@ -102,9 +102,17 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
                 where aa.Market_type='%s' \
                 order by aa.processing_date desc \
             ) \
-        and c.processing_date=dateadd(DD,-1,b.processing_date) \
-        order by a.%s %s;"\
-        %(market_type,total_day,market_type,market_type,cond,buy_sell)
+        and c.processing_date=(select top 1 processing_date \
+                                from ( \
+                                    select distinct top 2 aa.processing_date \
+                                        from Institutional_investors aa \
+                                            where aa.Market_type='%s' \
+                                            order by aa.processing_date desc \
+                                    ) aaa \
+                                    order by aaa.processing_date asc  \
+                                    ) \
+        order by a.%s %s;" \
+        %(market_type,total_day,market_type,market_type,market_type,cond,buy_sell)
         
     #進DB讀取資料存dataframe
     df=pd.read_sql(Institutional_investors_top_SQL,con=eng)
@@ -166,12 +174,45 @@ market_type =>市場別
     ex.上市、上櫃
 stock_num   =>股票代碼
 
-default   
+default
+month_range => 取出月份數預設60個月
+
+old default   
 long_month    =>長期計算幾個月份 預設12
 short_month   =>短期計算幾個月份  預設3
 
 '''
-def Individual_stock_monthly_revenue_short_long(check_code,stock_num,long_month=12,short_month=3):
+
+def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num,month_range=60):
+    #塞選特定期間法人買賣超狀況
+    Individual_stock_monthly_revenue_short_long_SQL="select top %s  a.Year, \
+    a.Month, \
+    trim(a.Stock_num) as Stock_num, \
+    b.Stock_name, \
+    a.Short_earn, \
+    a.Short_earn_last, \
+    a.Growth_short, \
+    a.Long_earn, \
+    a.Long_earn_last, \
+    a.Growth_long \
+    from Long_Short_Revenue a left join Stock_Category b \
+    on a.Stock_num=b.Stock_num \
+    where a.Market_type='%s' \
+    and a.stock_num='%s' \
+    order by a.stock_num asc,a.year desc,a.month desc" \
+    %(month_range,market_type,stock_num)
+
+    #進DB讀取資料存dataframe
+    df=pd.read_sql(Individual_stock_monthly_revenue_short_long_SQL,con=eng)
+    #轉換dataframe to json
+    result = df.to_json(orient = 'records', force_ascii=False)
+    #print(check_code,'=',result)
+    print(result)
+    return result
+
+
+
+def Individual_stock_monthly_revenue_short_long_old(check_code,stock_num,long_month=12,short_month=3):
 
     long_month_tmp=long_month*2
     Individual_stock_Ronthly_revenue_short_long_SQL="select trim(a.Stock_num) as Stock_num, \
@@ -189,7 +230,7 @@ def Individual_stock_monthly_revenue_short_long(check_code,stock_num,long_month=
         order by CONCAT(a1.year, a1.Month/10) desc) \
         and a.Stock_num='%s' \
         order by a.Stock_num desc,a.year desc,a.Month desc;" \
-                                                    %(long_month_tmp,stock_num)
+        %(long_month_tmp,stock_num)
     df=pd.read_sql(Individual_stock_Ronthly_revenue_short_long_SQL,con=eng)
 
     #長期 12個月  短期 3個月
@@ -237,13 +278,49 @@ check_code  =>檢查碼
     ex.代號
 market_type =>市場別
     ex.上市、上櫃
+year =>年份
+    ex.111
+month =>月份
+    ex.1
 
-default   
+
+old default   
 long_month    =>長期計算幾個月份 預設12
 short_month   =>短期計算幾個月份  預設3
 
 '''
-def Monthly_revenue_short_long(check_code,market_type,long_month=12,short_month=3):
+
+def Monthly_revenue_short_long(check_code,market_type,year,month):
+    #塞選特定期間法人買賣超狀況
+    Individual_stock_monthly_revenue_short_long_SQL="select  a.Year, \
+    a.Month, \
+    trim(a.Stock_num) as Stock_num, \
+    b.Stock_name, \
+    a.Short_earn, \
+    a.Short_earn_last, \
+    a.Growth_short, \
+    a.Long_earn, \
+    a.Long_earn_last, \
+    a.Growth_long \
+    from Long_Short_Revenue a left join Stock_Category b \
+    on a.Stock_num=b.Stock_num \
+    where a.year=%s \
+    and a.month=%s \
+    and a.Market_type='%s' \
+    order by a.stock_num asc,a.year desc,a.month desc" \
+    %(year,month,market_type)
+
+
+    #進DB讀取資料存dataframe
+    df=pd.read_sql(Individual_stock_monthly_revenue_short_long_SQL,con=eng)
+    #轉換dataframe to json
+    result = df.to_json(orient = 'records', force_ascii=False)
+    #print(check_code,'=',result)
+    print(result)
+    return result
+
+
+def Monthly_revenue_short_long_old(check_code,market_type,long_month=12,short_month=3):
 
     long_month_tmp=long_month*2
 
@@ -376,10 +453,61 @@ check_code  =>檢查碼
 market_type =>市場別
     ex.上市、上櫃
 
+year=>年份
+
+month=>月份
 
 '''
 
-def Monthly_revenue(check_code,market_type):
+def Monthly_revenue(check_code,market_type,year,month):
+
+    Monthly_revenue_SQL="select trim(a.Stock_num) as Stock_num, \
+        b.Stock_name, \
+        trim(str(a.Year)) Year, \
+        trim(str(a.Month)) Month, \
+        a.Mon_earn, \
+        a.Last_mon_earn, \
+        a.Growth_mon, \
+        a.Last_year_mon_earn, \
+        a.Growth_year, \
+        a.Total_earn, \
+        a.Last_total_earn, \
+        a.Grow_total_earn, \
+        a.Comment \
+        from Monthly_Revenue a left join Stock_Category b \
+        on a.Stock_num=b.Stock_num \
+        where a.Year=%s \
+        and a.month=%s \
+        and a.Market_type='%s' \
+        order by a.Stock_num,a.month desc; " \
+                        %(year,month,market_type)
+    df=pd.read_sql(Monthly_revenue_SQL,con=eng)
+
+    #取出最新股價
+    Price_SQL="select trim(a.Stock_num) as Stock_num, \
+        a.Close_price \
+        from Every_Transaction a \
+        where a.Processing_date in ( \
+        select top 1 Processing_date \
+        from Every_Transaction \
+        where Market_type='%s' \
+        order by Processing_date desc) \
+        and a.Market_type='%s';" \
+              %(market_type,market_type)
+    df_price=pd.read_sql_query(Price_SQL,con=eng)
+
+
+
+    #合併表格
+    df=pd.merge(df, df_price.iloc[:,:3], on='Stock_num',how='left')
+
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+    #return result
+
+
+
+def Monthly_revenue_old(check_code,market_type):
 
     Monthly_revenue_SQL="select trim(a.Stock_num) as Stock_num, \
         b.Stock_name, \
