@@ -293,6 +293,7 @@ def Monthly_revenue_short_long(check_code,market_type,year,month):
     a.Month, \
     trim(a.Stock_num) as Stock_num, \
     b.Stock_name, \
+    a.Mon_earn, \
     a.Short_earn, \
     a.Short_earn_last, \
     a.Growth_short, \
