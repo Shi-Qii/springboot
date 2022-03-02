@@ -292,7 +292,7 @@ short_month   =>短期計算幾個月份  預設3
 
 def Monthly_revenue_short_long(check_code,market_type,year,month):
     #塞選特定期間法人買賣超狀況
-    Individual_stock_monthly_revenue_short_long_SQL="select  a.Year, \
+    Monthly_revenue_short_long_SQL="select  a.Year, \
     a.Month, \
     trim(a.Stock_num) as Stock_num, \
     b.Stock_name, \
@@ -307,12 +307,12 @@ def Monthly_revenue_short_long(check_code,market_type,year,month):
     where a.year=%s \
     and a.month=%s \
     and a.Market_type='%s' \
-    order by a.stock_num asc,a.year desc,a.month desc" \
-    %(year,month,market_type)
+    order by a.stock_num asc,a.year desc,a.month desc;" \
+        %(year,month,market_type)
 
 
     #進DB讀取資料存dataframe
-    df=pd.read_sql(Individual_stock_monthly_revenue_short_long_SQL,con=eng)
+    df=pd.read_sql(Monthly_revenue_short_long_SQL,con=eng)
     #轉換dataframe to json
     result = df.to_json(orient = 'records', force_ascii=False)
     #print(check_code,'=',result)
