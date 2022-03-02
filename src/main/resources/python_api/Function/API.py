@@ -102,18 +102,14 @@ def Institutional_investors_top(check_code,market_type,buy_sell,cond,total_day=1
                 where aa.Market_type='%s' \
                 order by aa.processing_date desc \
             ) \
-        and c.processing_date=(select top 1 processing_date \
-                                from ( \
-                                    select distinct top 2 aa.processing_date \
-                                        from Institutional_investors aa \
-                                            where aa.Market_type='%s' \
-                                            order by aa.processing_date desc \
-                                    ) aaa \
-                                    order by aaa.processing_date asc  \
-                                    ) \
+        and c.processing_date = (select top 1 aa.processing_date \
+            from Institutional_investors aa \
+            where aa.Market_type='%s' \
+            and aa.processing_date <> b.processing_date \
+            order by aa.processing_date desc \
+        ) \
         order by a.%s %s;" \
         %(market_type,total_day,market_type,market_type,market_type,cond,buy_sell)
-        
     #進DB讀取資料存dataframe
     df=pd.read_sql(Institutional_investors_top_SQL,con=eng)
     
@@ -189,6 +185,7 @@ def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num
     a.Month, \
     trim(a.Stock_num) as Stock_num, \
     b.Stock_name, \
+    a.Mon_earn, \
     a.Short_earn, \
     a.Short_earn_last, \
     a.Growth_short, \
