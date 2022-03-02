@@ -719,3 +719,37 @@ def Stock_Num_Name(check_code):
     df=pd.read_sql(Stock_Num_Name_SQL,con=eng)
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
+
+
+'''
+#########################################################################
+##                  每日成交價、本益比、淨值比                    
+#########################################################################
+個股指數
+
+day_range  =>天數
+    default=100
+
+stock_num  =>股票代號
+
+'''
+def Ind_every_transaction(check_code,stock_num,day_range=365):
+    Ind_every_transaction_SQL="select top %s a.Processing_date, \
+           a.Stock_num, \
+           b.Stock_name, \
+           a.Open_price, \
+           a.High_price, \
+           a.Low_price, \
+           a.Close_price, \
+           round(a.Trading_volume/1000,0) as Trading_volume, \
+           a.Yield_rate, \
+           a.PE_rate, \
+           a.PB_rate \
+        from Every_Transaction a left join Stock_Category b \
+        on a.Stock_num=b.Stock_num \
+        where a.Stock_num='%s' \
+        order by a.Processing_date desc;" \
+                              %(day_range,stock_num)
+    df=pd.read_sql(Ind_every_transaction_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
