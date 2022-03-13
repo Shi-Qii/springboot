@@ -729,7 +729,6 @@ def Stock_Num_Name(check_code):
 
 day_range  =>天數
     default=100
-
 stock_num  =>股票代號
 
 '''
