@@ -711,7 +711,7 @@ def OTC_Institutional_investors(check_code,day_range=100):
 
 '''
 
-def Stock_Num_Name(check_code):
+def Stock_num_name(check_code):
     Stock_Num_Name_SQL="select a.Stock_num+'-'+a.Stock_name+'('+a.Market_type+')' as Stock_nm\
                     from Stock_Category a \
                     order by a.Stock_num asc " \
@@ -888,5 +888,22 @@ def Industry_sector_every_transaction(check_code,Industry_sector,Market_type):
     df=pd.read_sql(Industry_every_transaction_SQL,con=eng)
 
 
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   上市、上櫃類股代號                 
+#########################################################################
+類股代號
+
+'''
+
+def Industry_sector_name(check_code):
+    Industry_Sector_Name_SQL="select distinct Industry_sector \
+                        from Stock_Category \
+                        order by Industry_sector asc"
+
+    df=pd.read_sql(Industry_Sector_Name_SQL,con=eng)
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)

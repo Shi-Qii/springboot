@@ -18,5 +18,8 @@ import sys
 
 
 if sys.argv[1]=='Stock_Num_Name':
-    # check_code , market_type , buy_sell , cond
-    API.Stock_Num_Name( sys.argv[1])
+    # check_code
+    API.Stock_num_name( sys.argv[1])
+elif sys.argv[1]=='Industry_Sector_Name':
+    # check_code
+    API.Industry_sector_name( sys.argv[1])
