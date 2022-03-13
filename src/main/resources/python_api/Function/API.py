@@ -763,7 +763,7 @@ month  =>月份
 
 '''
 
-def Short_revenue_breakthrough_long(check_code,year,month):
+def Short_revenue_breakthrough_long(check_code,market_type,year,month):
     year=int(year)
     month=int(month)
 
@@ -780,9 +780,10 @@ def Short_revenue_breakthrough_long(check_code,year,month):
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
         and a.month=%s \
+        and b.Market_type='%s' \
         and a.growth_short>a.growth_long \
         order by a.stock_num asc;" \
-                        %(year,month)
+                        %(year,month,market_type)
 
     df_cur=pd.read_sql(Currently_month_SQL,con=eng)
 
@@ -791,9 +792,10 @@ def Short_revenue_breakthrough_long(check_code,year,month):
         from Long_Short_Revenue a \
         where a.year=%s \
         and a.month=%s \
+        and b.Market_type='%s' \
         and a.growth_short<a.growth_long \
         order by a.stock_num asc;" \
-                   %(last_year,last_month)
+                   %(year,month,market_type)
 
     df_last=pd.read_sql(Last_month_SQL,con=eng)
 
@@ -813,7 +815,7 @@ month  =>月份
 
 '''
 
-def Long_revenue_breakthrough_short(check_code,year,month):
+def Long_revenue_breakthrough_short(check_code,market_type,year,month):
     year=int(year)
     month=int(month)
     if month==1:
@@ -829,9 +831,10 @@ def Long_revenue_breakthrough_short(check_code,year,month):
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
         and a.month=%s \
+        and b.Market_type='%s' \
         and a.growth_short<a.growth_long \
         order by a.stock_num asc;" \
-                        %(year,month)
+        %(year,month,market_type)
 
     df_cur=pd.read_sql(Currently_month_SQL,con=eng)
 
@@ -840,9 +843,10 @@ def Long_revenue_breakthrough_short(check_code,year,month):
         from Long_Short_Revenue a \
         where a.year=%s \
         and a.month=%s \
+        and b.Market_type='%s' \
         and a.growth_short>a.growth_long \
         order by a.stock_num asc;" \
-                   %(last_year,last_month)
+        %(year,month,market_type)
 
     df_last=pd.read_sql(Last_month_SQL,con=eng)
 
