@@ -891,6 +891,7 @@ def Industry_sector_every_transaction(check_code,Industry_sector,Market_type):
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
+
 '''
 #########################################################################
 ##                   上市、上櫃類股代號                 
