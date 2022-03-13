@@ -753,3 +753,137 @@ def Ind_every_transaction(check_code,stock_num,day_range=365):
     df=pd.read_sql(Ind_every_transaction_SQL,con=eng)
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
+
+'''
+#########################################################################
+##                   當月短期總營收突破長期營收                    
+#########################################################################
+
+year   =>年
+month  =>月份
+
+'''
+
+def Short_revenue_breakthrough_long(check_code,year,month):
+    year=int(year)
+    month=int(month)
+
+    if month==1:
+        last_year=year-1
+        last_month=12
+    else:
+        last_year=year
+        last_month=month-1
+
+
+    Currently_month_SQL="select a.year,a.month,a.stock_num,b.stock_name,a.growth_short,a.growth_long \
+        from Long_Short_Revenue a left join Stock_Category b\
+        on a.Stock_num=b.Stock_num \
+        where a.year=%s \
+        and a.month=%s \
+        and a.growth_short>a.growth_long \
+        order by a.stock_num asc;" \
+                        %(year,month)
+
+    df_cur=pd.read_sql(Currently_month_SQL,con=eng)
+
+
+    Last_month_SQL="select a.stock_num \
+        from Long_Short_Revenue a \
+        where a.year=%s \
+        and a.month=%s \
+        and a.growth_short<a.growth_long \
+        order by a.stock_num asc;" \
+                   %(last_year,last_month)
+
+    df_last=pd.read_sql(Last_month_SQL,con=eng)
+
+
+    df=pd.merge(df_cur,df_last, on='stock_num')
+
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   當月長期總營收突破短期營收                    
+#########################################################################
+
+year   =>年
+month  =>月份
+
+'''
+
+def Long_revenue_breakthrough_short(check_code,year,month):
+    year=int(year)
+    month=int(month)
+    if month==1:
+        last_year=year-1
+        last_month=12
+    else:
+        last_year=year
+        last_month=month-1
+
+
+    Currently_month_SQL="select a.year,a.month,a.stock_num,b.stock_name,a.growth_short,a.growth_long \
+        from Long_Short_Revenue a left join Stock_Category b\
+        on a.Stock_num=b.Stock_num \
+        where a.year=%s \
+        and a.month=%s \
+        and a.growth_short<a.growth_long \
+        order by a.stock_num asc;" \
+                        %(year,month)
+
+    df_cur=pd.read_sql(Currently_month_SQL,con=eng)
+
+
+    Last_month_SQL="select a.stock_num \
+        from Long_Short_Revenue a \
+        where a.year=%s \
+        and a.month=%s \
+        and a.growth_short>a.growth_long \
+        order by a.stock_num asc;" \
+                   %(last_year,last_month)
+
+    df_last=pd.read_sql(Last_month_SQL,con=eng)
+
+
+    df=pd.merge(df_cur,df_last, on='stock_num')
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   各類股當日成交價                    
+#########################################################################
+
+Industry_sector   =>類股名稱
+Market_type     =>市場
+
+'''
+
+def Industry_sector_every_transaction(check_code,Industry_sector,Market_type):
+
+
+    Industry_every_transaction_SQL="select a.Processing_date,       a.Stock_num,       b.Stock_name, \
+                               a.Open_price,       a.High_price,       a.Low_price, \
+                               a.Close_price,       a.Trading_volume,       a.Trading_count, \
+                               a.Turnover,       a.Yield_rate,       a.Yield_year, \
+                               a.PB_rate,       a.PE_rate \
+                        from Every_Transaction a left join Stock_Category b \
+                        on  a.Stock_num =b.Stock_num \
+                        where b.Market_type='%s' \
+                        and b.Industry_sector='%s' \
+                        and a.Processing_date = ( \
+                            select top 1 c.Processing_date \
+                            from Every_Transaction c \
+                            where c.Market_type='%s' \
+                            order by c.Processing_date desc) \
+                        order by a.Stock_num asc;" \
+                                   %(Market_type,Industry_sector,Market_type)
+
+    df=pd.read_sql(Industry_every_transaction_SQL,con=eng)
+
+
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
