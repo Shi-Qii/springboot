@@ -807,15 +807,16 @@ def Short_revenue_breakthrough_long(check_code,market_type,year,month):
 
 '''
 #########################################################################
-##                   當月長期總營收突破短期營收                    
+##                   當月短期總營收突破長期營收                    
 #########################################################################
 
 year   =>年
 month  =>月份
-
+market_type =>市場別
+    ex.上市、上櫃
 '''
 
-def Long_revenue_breakthrough_short(check_code,market_type,year,month):
+def Short_revenue_breakthrough_long(check_code,market_type,year,month):
     year=int(year)
     month=int(month)
     if month==1:
@@ -827,31 +828,49 @@ def Long_revenue_breakthrough_short(check_code,market_type,year,month):
 
 
     Currently_month_SQL="select a.year,a.month,a.stock_num,b.stock_name,a.growth_short,a.growth_long \
-        from Long_Short_Revenue a left join Stock_Category b\
+        from Long_Short_Revenue a left join Stock_Category b \
+        on a.Stock_num=b.Stock_num \
+        where a.year=%s \
+        and a.month=%s \
+        and b.Market_type='%s' \
+        and a.growth_short>a.growth_long \
+        order by a.stock_num asc;" \
+                        %(year,month,market_type)
+
+    df_cur=pd.read_sql(Currently_month_SQL,con=eng)
+
+
+    Last_month_SQL="select a.stock_num \
+        from Long_Short_Revenue a left join Stock_Category b \
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
         and a.month=%s \
         and b.Market_type='%s' \
         and a.growth_short<a.growth_long \
         order by a.stock_num asc;" \
-        %(year,month,market_type)
-
-    df_cur=pd.read_sql(Currently_month_SQL,con=eng)
-
-
-    Last_month_SQL="select a.stock_num \
-        from Long_Short_Revenue a \
-        where a.year=%s \
-        and a.month=%s \
-        and b.Market_type='%s' \
-        and a.growth_short>a.growth_long \
-        order by a.stock_num asc;" \
-        %(year,month,market_type)
+                   %(last_year,last_month,market_type)
 
     df_last=pd.read_sql(Last_month_SQL,con=eng)
 
 
     df=pd.merge(df_cur,df_last, on='stock_num')
+
+    #取出最新股價
+    Price_SQL="select trim(a.Stock_num) as stock_num, \
+        a.Close_price \
+        from Every_Transaction a \
+        where a.Processing_date in ( \
+        select top 1 Processing_date \
+        from Every_Transaction \
+        where Market_type='%s' \
+        order by Processing_date desc) \
+        and a.Market_type='%s';" \
+              %(market_type,market_type)
+    df_price=pd.read_sql_query(Price_SQL,con=eng)
+
+
+    #合併表格
+    df=pd.merge(df, df_price, on='stock_num',how='left')
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
