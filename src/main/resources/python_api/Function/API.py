@@ -821,7 +821,7 @@ def Short_revenue_breakthrough_long(check_code,market_type,year,month):
         last_month=month-1
 
 
-    Currently_month_SQL="select a.year,a.month,a.stock_num,b.stock_name,a.growth_short,a.growth_long \
+    Currently_month_SQL="select a.Year,a.Month,a.Stock_num,b.Stock_name,a.Growth_short,a.Growth_long \
         from Long_Short_Revenue a left join Stock_Category b \
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
@@ -834,7 +834,7 @@ def Short_revenue_breakthrough_long(check_code,market_type,year,month):
     df_cur=pd.read_sql(Currently_month_SQL,con=eng)
 
 
-    Last_month_SQL="select a.stock_num \
+    Last_month_SQL="select a.Stock_num \
         from Long_Short_Revenue a left join Stock_Category b \
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
@@ -847,10 +847,10 @@ def Short_revenue_breakthrough_long(check_code,market_type,year,month):
     df_last=pd.read_sql(Last_month_SQL,con=eng)
 
 
-    df=pd.merge(df_cur,df_last, on='stock_num')
+    df=pd.merge(df_cur,df_last, on='Stock_num')
 
     #取出最新股價
-    Price_SQL="select trim(a.Stock_num) as stock_num, \
+    Price_SQL="select trim(a.Stock_num) as Stock_num, \
         a.Close_price \
         from Every_Transaction a \
         where a.Processing_date in ( \
@@ -864,7 +864,7 @@ def Short_revenue_breakthrough_long(check_code,market_type,year,month):
 
 
     #合併表格
-    df=pd.merge(df, df_price, on='stock_num',how='left')
+    df=pd.merge(df, df_price, on='Stock_num',how='left')
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
@@ -891,7 +891,7 @@ def Long_revenue_breakthrough_short(check_code,market_type,year,month):
         last_month=month-1
 
 
-    Currently_month_SQL="select a.year,a.month,a.stock_num,b.stock_name,a.growth_short,a.growth_long \
+    Currently_month_SQL="select a.Year,a.Month,a.Stock_num,b.Stock_name,a.Growth_short,a.Growth_long \
         from Long_Short_Revenue a left join Stock_Category b\
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
@@ -904,7 +904,7 @@ def Long_revenue_breakthrough_short(check_code,market_type,year,month):
     df_cur=pd.read_sql(Currently_month_SQL,con=eng)
 
 
-    Last_month_SQL="select a.stock_num \
+    Last_month_SQL="select a.Stock_num \
         from Long_Short_Revenue a left join Stock_Category b\
         on a.Stock_num=b.Stock_num \
         where a.year=%s \
@@ -917,9 +917,9 @@ def Long_revenue_breakthrough_short(check_code,market_type,year,month):
     df_last=pd.read_sql(Last_month_SQL,con=eng)
 
 
-    df=pd.merge(df_cur,df_last, on='stock_num')
+    df=pd.merge(df_cur,df_last, on='Stock_num')
     #取出最新股價
-    Price_SQL="select trim(a.Stock_num) as stock_num, \
+    Price_SQL="select trim(a.Stock_num) as Stock_num, \
         a.Close_price \
         from Every_Transaction a \
         where a.Processing_date in ( \
@@ -933,7 +933,7 @@ def Long_revenue_breakthrough_short(check_code,market_type,year,month):
 
 
     #合併表格
-    df=pd.merge(df, df_price, on='stock_num',how='left')
+    df=pd.merge(df, df_price, on='Stock_num',how='left')
 
 
 
