@@ -151,7 +151,6 @@ def Individual_stock_institutional_investors(check_code,stock_num,day):
     order by a.Processing_date desc ;" \
     %(day,stock_num)
 
-
     #進DB讀取資料存dataframe
     df=pd.read_sql(Individual_stock_Institutional_investors_SQL,con=eng)
     #轉換dataframe to json
