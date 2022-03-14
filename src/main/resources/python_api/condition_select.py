@@ -27,7 +27,7 @@ import sys
 
 if sys.argv[1]=='Short_Revenue_Breakthrough_Long':
     # check_code , year , month
-    API.Short_revenue_breakthrough_long( sys.argv[1], sys.argv[2], sys.argv[3])
+    API.Short_revenue_breakthrough_long( sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
 elif sys.argv[1]=='Long_Revenue_Breakthrough_Short':
     # check_code , year , month
-    API.Short_revenue_breakthrough_long( sys.argv[1], sys.argv[2], sys.argv[3])
+    API.Short_revenue_breakthrough_long( sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
