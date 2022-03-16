@@ -993,3 +993,41 @@ def Industry_sector_name(check_code):
     df=pd.read_sql(Industry_Sector_Name_SQL,con=eng)
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
+
+'''
+#########################################################################
+##                   單季財務比率                    
+#########################################################################
+
+stock_num   =>股票代碼
+'''
+
+def Financial_ratio_season(check_code,stock_num):
+    Financial_ratio_SQL="select * \
+    from Financial_Ratio_Season \
+    where Stock_num='%s' \
+    order by year desc,season desc;" \
+                        %(stock_num)
+
+    df=pd.read_sql(Financial_ratio_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   累季財務比率                    
+#########################################################################
+
+stock_num   =>股票代碼
+'''
+
+def Financial_ratio(check_code,stock_num):
+    Financial_ratio_SQL="select * \
+    from Financial_Ratio \
+    where Stock_num='%s' \
+    order by year desc,season desc;" \
+                        %(stock_num)
+
+    df=pd.read_sql(Financial_ratio_SQL,con=eng)
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
