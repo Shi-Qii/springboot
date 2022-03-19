@@ -1003,13 +1003,28 @@ stock_num   =>股票代碼
 '''
 
 def Financial_ratio_season(check_code,stock_num):
+
     Financial_ratio_SQL="select * \
     from Financial_Ratio_Season \
     where Stock_num='%s' \
     order by year desc,season desc;" \
                         %(stock_num)
-
     df=pd.read_sql(Financial_ratio_SQL,con=eng)
+
+    #取出每季平均股價
+    Every_transaction_SQL="select Stock_num,DATEPART(yy , Processing_date)-1911 Year, \
+        DATEPART(qq , Processing_date) Season, \
+         avg(Close_price) Price \
+        from Every_Transaction \
+        where Stock_num='%s' \
+        and Processing_date > DATEADD(qq, -32, GETDATE()) \
+        group by DATEPART(yy , Processing_date),DATEPART(qq , Processing_date),Stock_num \
+        order by year desc,season desc;" \
+                          %(stock_num)
+    Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
+
+    df=Every_transaction.merge(df,how='right',on=['Year','Season','Stock_num'])
+
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
@@ -1028,10 +1043,22 @@ def Financial_ratio(check_code,stock_num):
     order by year desc,season desc;" \
                         %(stock_num)
 
-    df=pd.read_sql(Financial_ratio_SQL,con=eng)
+    #取出每季平均股價
+    Every_transaction_SQL="select Stock_num,DATEPART(yy , Processing_date)-1911 Year, \
+        DATEPART(qq , Processing_date) Season, \
+         avg(Close_price) Price \
+        from Every_Transaction \
+        where Stock_num='%s' \
+        and Processing_date > DATEADD(qq, -32, GETDATE()) \
+        group by DATEPART(yy , Processing_date),DATEPART(qq , Processing_date),Stock_num \
+        order by year desc,season desc;" \
+                          %(stock_num)
+    Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
+
+    df=Every_transaction.merge(df,how='right',on=['Year','Season','Stock_num'])
+
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
-
 '''
 #########################################################################
 ##                   累季現金流量表                    
@@ -1233,7 +1260,6 @@ def Comprehensive_income(check_code,market_type,year,season):
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
-
 '''
 #########################################################################
 ##                   單季綜合損益                
@@ -1245,7 +1271,7 @@ market_type =>市場別
     ex.上市、上櫃
 '''
 
-def Comprehensive_income_season(check_code,market_type,year,season):
+def Comprehensive_Income(check_code,market_type,year,season):
 
     Common_SQL="select a.Stock_num, \
         b.Stock_Name, \
@@ -1259,7 +1285,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-               %(markey_type,year,season)
+               %(market_type,year,season)
 
 
     Common=pd.read_sql(Common_SQL,con=eng)
@@ -1278,7 +1304,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-             %(markey_type,year,season)
+             %(market_type,year,season)
 
 
     Bank=pd.read_sql(Bank_SQL,con=eng)
@@ -1297,7 +1323,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-              %(markey_type,year,season)
+              %(market_type,year,season)
 
 
     Stock=pd.read_sql(Stock_SQL,con=eng)
@@ -1315,7 +1341,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-                %(markey_type,year,season)
+                %(market_type,year,season)
 
 
     Finance=pd.read_sql(Finance_SQL,con=eng)
@@ -1334,7 +1360,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-                  %(markey_type,year,season)
+                  %(market_type,year,season)
 
 
     Insurance=pd.read_sql(Insurance_SQL,con=eng)
@@ -1348,7 +1374,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
             order by Processing_date desc \
             ) \
         and Market_type='%s'" \
-                          %(markey_type)
+                          %(market_type)
 
 
     Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
@@ -1361,4 +1387,137 @@ def Comprehensive_income_season(check_code,market_type,year,season):
     df=Every_transaction.merge(df,how='right',on='Stock_num')
 
     result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   資產負債                
+#########################################################################
+
+year   =>年
+season  =>季
+market_type =>市場別
+    ex.上市、上櫃
+'''
+def Balance_sheet(check_code,market_type,year,season):
+    Common_SQL="select a.Stock_num, \
+            b.Stock_name, \
+            a.Asset, \
+            a.Liability, \
+            a.Total_equity, \
+            a.Book_value_per_share \
+            from Balance_Sheet_Common a left join Stock_Category b \
+            on a.stock_num=b.stock_num \
+            where a.Market_type = '%s' \
+              and a.year=%s \
+              and a.season=%s \
+            order by a.Stock_num asc" \
+               %(market_type,year,season)
+
+
+    Common=pd.read_sql(Common_SQL,con=eng)
+
+    Bank_SQL="select a.Stock_num, \
+            b.Stock_name, \
+            a.Asset, \
+            a.Liability, \
+            a.Total_equity, \
+            a.Book_value_per_share \
+            from Balance_Sheet_Bank a left join Stock_Category b \
+            on a.stock_num=b.stock_num \
+            where a.Market_type = '%s' \
+              and a.year=%s \
+              and a.season=%s \
+            order by a.Stock_num asc" \
+             %(market_type,year,season)
+
+
+    Bank=pd.read_sql(Bank_SQL,con=eng)
+
+    Finance_SQL="select a.Stock_num, \
+            b.Stock_name, \
+            a.Asset, \
+            a.Liability, \
+            a.Total_equity, \
+            a.Book_value_per_share \
+            from Balance_Sheet_Finance a left join Stock_Category b \
+            on a.stock_num=b.stock_num \
+            where a.Market_type = '%s' \
+              and a.year=%s \
+              and a.season=%s \
+            order by a.Stock_num asc" \
+                %(market_type,year,season)
+
+
+    Finance=pd.read_sql(Finance_SQL,con=eng)
+
+    Insurance_SQL="select a.Stock_num, \
+            b.Stock_name, \
+            a.Asset, \
+            a.Liability, \
+            a.Total_equity, \
+            a.Book_value_per_share \
+            from Balance_Sheet_Insurance a left join Stock_Category b \
+            on a.stock_num=b.stock_num \
+            where a.Market_type = '%s' \
+              and a.year=%s \
+              and a.season=%s \
+            order by a.Stock_num asc" \
+                  %(market_type,year,season)
+
+
+    Insurance=pd.read_sql(Insurance_SQL,con=eng)
+
+    Stock_SQL="select a.Stock_num, \
+            b.Stock_name, \
+            a.Asset, \
+            a.Liability, \
+            a.Total_equity, \
+            a.Book_value_per_share \
+            from Balance_Sheet_Stock a left join Stock_Category b \
+            on a.stock_num=b.stock_num \
+            where a.Market_type = '%s' \
+              and a.year=%s \
+              and a.season=%s \
+            order by a.Stock_num asc" \
+              %(market_type,year,season)
+
+
+    Stock=pd.read_sql(Stock_SQL,con=eng)
+
+    Other_SQL="select a.Stock_num, \
+            b.Stock_name, \
+            a.Asset, \
+            a.Liability, \
+            a.Total_equity, \
+            a.Book_value_per_share \
+            from Balance_Sheet_Other a left join Stock_Category b \
+            on a.stock_num=b.stock_num \
+            where a.Market_type = '%s' \
+              and a.year=%s \
+              and a.season=%s \
+            order by a.Stock_num asc" \
+              %(market_type,year,season)
+
+
+    Other=pd.read_sql(Other_SQL,con=eng)
+
+    Every_transaction_SQL="select Stock_num,Close_price \
+            from Every_Transaction \
+            where Processing_date in ( \
+                select top 1 Processing_date \
+                from Every_Transaction \
+                order by Processing_date desc \
+                ) \
+            and Market_type='%s'" \
+                          %(market_type)
+
+
+    Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
+
+    df=pd.concat([Common, Bank,Finance,Insurance,Stock,Other],axis=0)
+
+    Common.merge(Bank,how='inner',on='Stock_num')
+    df=Every_transaction.merge(df,how='right',on='Stock_num')
+    result = df.to_json(orient ='records', force_ascii=False)
     print(result)

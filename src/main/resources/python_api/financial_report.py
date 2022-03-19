@@ -43,3 +43,6 @@ elif sys.argv[1]=='Comprehensive_Income':
 elif sys.argv[1]=='Comprehensive_Income_Season':
     # check_code , market_type , year , season
     API.Comprehensive_income_season( sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+elif sys.argv[1]=='Balance_Sheet':
+    # check_code , market_type , year , season
+    API.Balance_sheet( sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
