@@ -46,3 +46,6 @@ elif sys.argv[1]=='Comprehensive_Income_Season':
 elif sys.argv[1]=='Balance_Sheet':
     # check_code , market_type , year , season
     API.Balance_sheet( sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+elif sys.argv[1]=='Stock_Dividen':
+    # check_code , stock_num
+    API.Stock_dividen( sys.argv[1], sys.argv[2])

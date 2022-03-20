@@ -1042,7 +1042,7 @@ def Financial_ratio(check_code,stock_num):
     where Stock_num='%s' \
     order by year desc,season desc;" \
                         %(stock_num)
-
+    df=pd.read_sql(Financial_ratio_SQL,con=eng)
     #取出每季平均股價
     Every_transaction_SQL="select Stock_num,DATEPART(yy , Processing_date)-1911 Year, \
         DATEPART(qq , Processing_date) Season, \
@@ -1156,7 +1156,7 @@ def Comprehensive_income(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-               %(markey_type,year,season)
+               %(market_type,year,season)
 
 
     Common=pd.read_sql(Common_SQL,con=eng)
@@ -1175,7 +1175,7 @@ def Comprehensive_income(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-             %(markey_type,year,season)
+             %(market_type,year,season)
 
 
     Bank=pd.read_sql(Bank_SQL,con=eng)
@@ -1194,7 +1194,7 @@ def Comprehensive_income(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-              %(markey_type,year,season)
+              %(market_type,year,season)
 
 
     Stock=pd.read_sql(Stock_SQL,con=eng)
@@ -1212,7 +1212,7 @@ def Comprehensive_income(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-                %(markey_type,year,season)
+                %(market_type,year,season)
 
 
     Finance=pd.read_sql(Finance_SQL,con=eng)
@@ -1231,7 +1231,7 @@ def Comprehensive_income(check_code,market_type,year,season):
           and a.year=%s \
           and a.season=%s \
         order by a.Stock_num asc" \
-                  %(markey_type,year,season)
+                  %(market_type,year,season)
 
 
     Insurance=pd.read_sql(Insurance_SQL,con=eng)
@@ -1245,7 +1245,7 @@ def Comprehensive_income(check_code,market_type,year,season):
             order by Processing_date desc \
             ) \
         and Market_type='%s'" \
-                          %(markey_type)
+                          %(market_type)
 
 
     Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
@@ -1260,6 +1260,7 @@ def Comprehensive_income(check_code,market_type,year,season):
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
 
+
 '''
 #########################################################################
 ##                   單季綜合損益                
@@ -1271,7 +1272,7 @@ market_type =>市場別
     ex.上市、上櫃
 '''
 
-def Comprehensive_Income(check_code,market_type,year,season):
+def Comprehensive_income_season(check_code,market_type,year,season):
 
     Common_SQL="select a.Stock_num, \
         b.Stock_Name, \
