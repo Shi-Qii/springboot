@@ -168,8 +168,7 @@ def Individual_stock_institutional_investors(check_code,stock_num,day):
 
 check_code  =>檢查碼
     ex.代號
-market_type =>市場別
-    ex.上市、上櫃
+
 stock_num   =>股票代碼
 
 default
@@ -181,7 +180,7 @@ short_month   =>短期計算幾個月份  預設3
 
 '''
 
-def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num,month_range=60):
+def Individual_stock_monthly_revenue_short_long(check_code,stock_num,month_range=60):
     #塞選特定期間法人買賣超狀況
     Individual_stock_monthly_revenue_short_long_SQL="select top %s trim(a.Stock_num) as Stock_num, \
     b.Stock_name, \
@@ -196,10 +195,9 @@ def Individual_stock_monthly_revenue_short_long(check_code,market_type,stock_num
     a.Growth_long \
     from Long_Short_Revenue a left join Stock_Category b \
     on a.Stock_num=b.Stock_num \
-    where a.Market_type='%s' \
-    and a.stock_num='%s' \
+    where  a.stock_num='%s' \
     order by a.stock_num asc,a.year desc,a.month desc" \
-                                                    %(month_range,market_type,stock_num)
+                                                    %(month_range,stock_num)
 
 
     #進DB讀取資料存dataframe

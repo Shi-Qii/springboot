@@ -29,8 +29,8 @@ import sys
 
 
 if sys.argv[1]=='Ind_Monthly_Revenue_Short_Long':
-    # check_code , market_type , stock_num
-    API.Individual_stock_monthly_revenue_short_long( sys.argv[1], sys.argv[2], sys.argv[3])
+    # check_code  , stock_num
+    API.Individual_stock_monthly_revenue_short_long( sys.argv[1], sys.argv[2])
 elif sys.argv[1]=='Listed_Monthly_Revenue_Short_Long':
     # check_code , market_type
     API.Monthly_revenue_short_long( sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
