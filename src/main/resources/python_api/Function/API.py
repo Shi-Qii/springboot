@@ -1520,3 +1520,87 @@ def Balance_sheet(check_code,market_type,year,season):
     df=Every_transaction.merge(df,how='right',on='Stock_num')
     result = df.to_json(orient ='records', force_ascii=False)
     print(result)
+
+
+'''
+#########################################################################
+##                   個股_基本資料                    
+#########################################################################
+
+stock_num   =>股票代碼
+'''
+
+def Basic_info(check_code,Stock_num):
+    import datetime
+    year = datetime.date.today().strftime("%Y")
+    #基本資料
+    data_SQL="select a.*,b.Main_business \
+    from Stock_Category a left join Main_Business b \
+    on a.Stock_num=b.Stock_num \
+    where a.Stock_num='%s';" \
+             %(Stock_num)
+    data=pd.read_sql(data_SQL,con=eng)
+
+    #股價
+    price_SQL="select top 1 a.Close_price \
+    from Every_Transaction a \
+    where a.Stock_num='%s' \
+    order by a.Processing_date desc" \
+              %(Stock_num)
+    price=pd.read_sql(price_SQL,con=eng)
+
+    data['Current_equity']=price.Close_price[0]*data.Outstanding_shares[0]
+    data['Funding_date']=data['Funding_date'].apply(lambda x:x+'  (成立'+str(+int(year)-int(x.split('-')[0]))+'年)')
+    data['Listed_date']=data['Listed_date'].apply(lambda x:x+'  (上市'+str(+int(year)-int(x.split('-')[0]))+'年)')
+    data[['Paid_in_capital','Current_equity']]=data[['Paid_in_capital','Current_equity']].applymap(lambda x:int(x)/100000000)
+    result=data.to_json(orient='records',force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   個股_重要子公司                    
+#########################################################################
+
+stock_num   =>股票代碼
+'''
+def Important_subsidiary(check_code,Stock_num):
+    data_SQL="select * \
+    from Important_Subsidiary a \
+    where a.Stock_num='%s';" \
+             %(Stock_num)
+
+    data=pd.read_sql(data_SQL,con=eng)
+
+    result=data.to_json(orient='records',force_ascii=False)
+    print(result)
+
+'''
+#########################################################################
+##                   個股_海外子公司                    
+#########################################################################
+
+stock_num   =>股票代碼
+'''
+def Oversea_company(check_code,Stock_num):
+    data_SQL="select a.Stock_num \
+    ,a.Oversea_company_name \
+    ,a.Oversea_company \
+    ,a.Region \
+    ,a.Hold_equity \
+    from Oversea_Company a \
+    where a.Stock_num='%s' \
+      and year in (select top 1 year \
+                   from Oversea_Company \
+                   where Stock_num=a.Stock_num \
+                   order by year desc) \
+      and season in (select top 1 season \
+                     from Oversea_Company \
+                     where Stock_num=a.Stock_num \
+                     order by Season desc) \
+    order by a.Hold_equity desc,a.Region desc;" \
+             %(Stock_num)
+
+    data=pd.read_sql(data_SQL,con=eng)
+
+    result=data.to_json(orient='records',force_ascii=False)
+    print(result)
