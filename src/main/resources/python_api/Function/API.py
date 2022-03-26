@@ -1143,7 +1143,7 @@ market_type =>市場別
 def Comprehensive_income(check_code,market_type,year,season):
 
     Common_SQL="select a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Operating_profit, \
         a.Out_operating_revence, \
         a.CNI, \
@@ -1162,7 +1162,7 @@ def Comprehensive_income(check_code,market_type,year,season):
 
     Bank_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1181,7 +1181,7 @@ def Comprehensive_income(check_code,market_type,year,season):
 
     Stock_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1199,7 +1199,7 @@ def Comprehensive_income(check_code,market_type,year,season):
 
     Finance_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1218,7 +1218,7 @@ def Comprehensive_income(check_code,market_type,year,season):
 
     Insurance_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1273,7 +1273,7 @@ market_type =>市場別
 def Comprehensive_income_season(check_code,market_type,year,season):
 
     Common_SQL="select a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Operating_profit, \
         a.Out_operating_revence, \
         a.CNI, \
@@ -1292,7 +1292,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
 
     Bank_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1311,7 +1311,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
 
     Stock_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1329,7 +1329,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
 
     Finance_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
@@ -1348,7 +1348,7 @@ def Comprehensive_income_season(check_code,market_type,year,season):
 
     Insurance_SQL="select \
         a.Stock_num, \
-        b.Stock_Name, \
+        b.Stock_name, \
         a.Pre_tax_income as Operating_profit, \
         0 as Out_operating_revence, \
         a.CNI, \
