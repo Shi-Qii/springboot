@@ -11,5 +11,5 @@ def table_test(name1,name2,name3):
     js = df.to_json(orient = 'columns')
     print(js)
     return js
-print('test vs code')
+print('test vs code  intel restort')
 table_test(sys.argv[1], sys.argv[2] ,sys.argv[3])
