@@ -1,5 +1,7 @@
 import pandas as pd
 import sys
+import numpy as np
+import numpy as np
 from sqlalchemy import create_engine
 db = create_engine('mssql+pymssql://sa:password@127.0.0.1:1433/Financial?charset=utf8' ,pool_pre_ping=True) 
 eng = db.connect()
