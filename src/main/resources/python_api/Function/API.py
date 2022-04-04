@@ -1004,7 +1004,7 @@ def Financial_ratio_season(check_code,stock_num):
     
     Financial_ratio_SQL="select * \
     from Financial_Ratio_Season a \
-    left join (select stock_name,Stock_num from Stock_Category) b \
+    left join (select Stock_name,Stock_num from Stock_Category) b \
     on a.Stock_num=b.Stock_num \
     where a.Stock_num='%s' \
     order by year desc,season desc;" \
@@ -1041,7 +1041,7 @@ stock_num   =>股票代碼
 def Financial_ratio(check_code,stock_num):
     Financial_ratio_SQL="select * \
     from Financial_Ratio_Season a \
-    left join (select stock_name,Stock_num from Stock_Category) b \
+    left join (select Stock_name,Stock_num from Stock_Category) b \
     on a.Stock_num=b.Stock_num \
     where a.Stock_num='%s' \
     order by year desc,season desc;" \
