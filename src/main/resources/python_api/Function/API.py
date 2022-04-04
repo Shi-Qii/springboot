@@ -1027,8 +1027,6 @@ def Financial_ratio_season(check_code,stock_num):
     
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
-    
-Financial_ratio_season('test',1101)
 
 '''
 #########################################################################
