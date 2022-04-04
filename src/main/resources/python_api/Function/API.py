@@ -1001,14 +1001,16 @@ stock_num   =>股票代碼
 '''
 
 def Financial_ratio_season(check_code,stock_num):
-
+    
     Financial_ratio_SQL="select * \
-    from Financial_Ratio_Season \
-    where Stock_num='%s' \
+    from Financial_Ratio_Season a \
+    left join (select stock_name,Stock_num from Stock_Category) b \
+    on a.Stock_num=b.Stock_num \
+    where a.Stock_num='%s' \
     order by year desc,season desc;" \
-                        %(stock_num)
+    %(stock_num)
     df=pd.read_sql(Financial_ratio_SQL,con=eng)
-
+    
     #取出每季平均股價
     Every_transaction_SQL="select Stock_num,DATEPART(yy , Processing_date)-1911 Year, \
         DATEPART(qq , Processing_date) Season, \
@@ -1017,18 +1019,20 @@ def Financial_ratio_season(check_code,stock_num):
         where Stock_num='%s' \
         and Processing_date > DATEADD(qq, -32, GETDATE()) \
         group by DATEPART(yy , Processing_date),DATEPART(qq , Processing_date),Stock_num \
-        order by year desc,season desc;" \
-                          %(stock_num)
+        order by year desc,season desc;"\
+        %(stock_num)    
     Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
-
-    df=Every_transaction.merge(df,how='right',on=['Year','Season','Stock_num'])
-
+    
+    df=Every_transaction.merge(df.iloc[:,:-1],how='right',on=['Year','Season','Stock_num'])
+    
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
+    
+Financial_ratio_season('test',1101)
 
 '''
 #########################################################################
-##                   累季財務比率                   
+##                   累季財務比率                    
 #########################################################################
 
 stock_num   =>股票代碼
@@ -1036,11 +1040,14 @@ stock_num   =>股票代碼
 
 def Financial_ratio(check_code,stock_num):
     Financial_ratio_SQL="select * \
-    from Financial_Ratio \
-    where Stock_num='%s' \
+    from Financial_Ratio_Season a \
+    left join (select stock_name,Stock_num from Stock_Category) b \
+    on a.Stock_num=b.Stock_num \
+    where a.Stock_num='%s' \
     order by year desc,season desc;" \
-                        %(stock_num)
+    %(stock_num)
     df=pd.read_sql(Financial_ratio_SQL,con=eng)
+    
     #取出每季平均股價
     Every_transaction_SQL="select Stock_num,DATEPART(yy , Processing_date)-1911 Year, \
         DATEPART(qq , Processing_date) Season, \
@@ -1049,14 +1056,15 @@ def Financial_ratio(check_code,stock_num):
         where Stock_num='%s' \
         and Processing_date > DATEADD(qq, -32, GETDATE()) \
         group by DATEPART(yy , Processing_date),DATEPART(qq , Processing_date),Stock_num \
-        order by year desc,season desc;" \
-                          %(stock_num)
+        order by year desc,season desc;"\
+        %(stock_num)    
     Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
-
-    df=Every_transaction.merge(df,how='right',on=['Year','Season','Stock_num'])
-
+    
+    df=Every_transaction.merge(df.iloc[:,:-1],how='right',on=['Year','Season','Stock_num'])
+    
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
+    
 '''
 #########################################################################
 ##                   累季現金流量表                    
