@@ -66,7 +66,7 @@ public class StockService implements Stock_useCategory {
             e.printStackTrace();
         }
 
-        log.info("results:" + table);
+        log.info("results:" + table.length());
 //        return objectObjectHashMap2;
         return table;
     }
@@ -95,7 +95,7 @@ public class StockService implements Stock_useCategory {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        log.info("最後送出:" + table + "\n");
+        log.info("最後送出:" + table.length() + "\n");
         log.info("--------------end-----------");
         return table;
     }
