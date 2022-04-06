@@ -99,6 +99,34 @@ public class StockService implements Stock_useCategory {
         log.info("--------------end-----------");
         return table;
     }
+    public String getIndustrySectNameInitData() throws IOException {
+        log.info("--------------開始初始化-----------");
+        String path = getInitPath();
+        String table = "";
+
+        String[] arguments = new String[]{
+                "python",
+                path,
+                "Industry_Sector_Name"
+        };
+
+        try {
+            Process process = Runtime.getRuntime().exec(arguments);
+            InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), Charset.forName("utf-8"));
+            BufferedReader in = new BufferedReader(inputStreamReader);
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                table += line;
+
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info("最後送出:" + table.length() + "\n");
+        log.info("--------------end-----------");
+        return table;
+    }
 
     public String getPath(String idName) throws IOException {
         // String id = "institutional_investors" + ".py"; //到時候從前端傳進來對應的名子

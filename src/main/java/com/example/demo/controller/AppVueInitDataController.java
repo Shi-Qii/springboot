@@ -34,6 +34,11 @@ public class AppVueInitDataController {
         String data = stockService.getInitData();
         return data;
     }
+    @GetMapping("/api/getIndustrySectNameAppVueInitData")
+    public String getIndustrySectNameInitData() throws IOException {
+        String data = stockService.getIndustrySectNameInitData();
+        return data;
+    }
 
 //    public static void main(String[] args) {
 //        printPyramid(5);
