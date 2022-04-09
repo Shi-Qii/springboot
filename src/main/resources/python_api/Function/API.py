@@ -1609,3 +1609,45 @@ def Oversea_company(check_code,Stock_num):
 
     result=data.to_json(orient='records',force_ascii=False)
     print(result)
+    
+    
+    '''
+#########################################################################
+##                   股票股利                    
+#########################################################################
+
+stock_num   =>股票代碼
+'''
+
+def Stock_dividen(check_code,stock_num):
+    
+    Stock_dividen_SQL="select a.Year,trim(a.Stock_num) Stock_num,b.stock_name,sum(Retained_earnings_cash) Retained_earnings_cash, \
+        sum(Capital_surplus_cash) Capital_surplus_cash, \
+        sum(Retained_earnings_stock) Retained_earnings_stock,sum(Capital_surplus_stock) Capital_surplus_stock, \
+        sum(Retained_earnings_cash)+sum(Capital_surplus_cash) total_cash, \
+        sum(Retained_earnings_stock)+sum(Capital_surplus_stock) total_stock \
+        from Stock_Dividen a left join Stock_Category b \
+        on a.Stock_num=b.Stock_num \
+        where a.Stock_num='%s' \
+        group by  a.Year,a.Stock_num,b.stock_name \
+        order by a.Year desc" \
+        %(stock_num)
+    Stock_dividen=pd.read_sql(Stock_dividen_SQL,con=eng)
+
+    #取出每季平均股價
+    Every_transaction_SQL="select Stock_num,DATEPART(yy , Processing_date)-1911 Year, \
+        avg(Close_price) Price \
+        from Every_Transaction \
+        where Stock_num='%s' \
+        group by DATEPART(yy , Processing_date),Stock_num \
+        order by year desc;"\
+        %(stock_num)    
+    
+    Every_transaction=pd.read_sql(Every_transaction_SQL,con=eng)
+    
+    df=Every_transaction.merge(Stock_dividen,how='right',on=['Year','Stock_num'])
+    
+    result = df.to_json(orient = 'records', force_ascii=False)
+    print(result)
+    
+    
