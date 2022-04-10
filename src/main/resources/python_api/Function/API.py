@@ -1621,7 +1621,7 @@ stock_num   =>股票代碼
 
 def Stock_dividen(check_code,stock_num):
     
-    Stock_dividen_SQL="select a.Year,trim(a.Stock_num) Stock_num,b.stock_name,sum(Retained_earnings_cash) Retained_earnings_cash, \
+    Stock_dividen_SQL="select a.Year,trim(a.Stock_num) Stock_num,b.Stock_name,sum(Retained_earnings_cash) Retained_earnings_cash, \
         sum(Capital_surplus_cash) Capital_surplus_cash, \
         sum(Retained_earnings_stock) Retained_earnings_stock,sum(Capital_surplus_stock) Capital_surplus_stock, \
         sum(Retained_earnings_cash)+sum(Capital_surplus_cash) total_cash, \
