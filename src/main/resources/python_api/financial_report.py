@@ -49,3 +49,9 @@ elif sys.argv[1]=='Balance_Sheet':
 elif sys.argv[1]=='Stock_Dividen':
     # check_code , stock_num
     API.Stock_dividen( sys.argv[1], sys.argv[2])
+elif sys.argv[1]=='Financial_Ratio_Season_All':
+    # check_code 
+    API.Financial_ratio_season( sys.argv[1])
+elif sys.argv[1]=='Financial_Ratio_All':
+    # check_code 
+    API.Financial_ratio_season( sys.argv[1])

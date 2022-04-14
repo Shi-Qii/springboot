@@ -1611,7 +1611,7 @@ def Oversea_company(check_code,Stock_num):
     print(result)
     
     
-    '''
+'''
 #########################################################################
 ##                   股票股利                    
 #########################################################################
@@ -1650,4 +1650,71 @@ def Stock_dividen(check_code,stock_num):
     result = df.to_json(orient = 'records', force_ascii=False)
     print(result)
     
-    
+'''
+#########################################################################
+##                   財務比率_全部股票                    
+#########################################################################
+
+'''
+def Financial_ratio_all(check_code):
+    Year_Season_SQL="SELECT TOP 2 YEAR,SEASON \
+        FROM FINANCIAL_RATIO \
+        GROUP BY YEAR,SEASON \
+        ORDER BY YEAR DESC,SEASON DESC; "
+    Year_Season=pd.read_sql(Year_Season_SQL,con=eng)
+
+    Financial_Ratio_All_SQL="SELECT * \
+            FROM FINANCIAL_RATIO \
+            WHERE YEAR='%s' \
+            AND SEASON='%s' \
+            UNION ALL \
+            SELECT * \
+            FROM FINANCIAL_RATIO \
+            WHERE YEAR='%s' \
+            AND SEASON='%s' \
+            AND STOCK_NUM NOT IN ( \
+                SELECT DISTINCT STOCK_NUM \
+            FROM FINANCIAL_RATIO \
+            WHERE YEAR='%s' \
+            AND SEASON='%s' \
+            )" \
+            %(Year_Season['YEAR'][0],Year_Season['SEASON'][0],Year_Season['YEAR'][1],\
+            Year_Season['SEASON'][1],Year_Season['YEAR'][0],Year_Season['SEASON'][0])
+    Financial_Ratio_All=pd.read_sql(Financial_Ratio_All_SQL,con=eng)
+    result = Financial_Ratio_All.to_json(orient = 'records', force_ascii=False)
+    print(result)
+
+
+'''
+#########################################################################
+##                   財務比率_分季_全部股票                    
+#########################################################################
+
+'''
+def Financial_ratio_season_all(check_code):
+    Year_Season_SQL="SELECT TOP 2 YEAR,SEASON \
+        FROM FINANCIAL_RATIO_SEASON \
+        GROUP BY YEAR,SEASON \
+        ORDER BY YEAR DESC,SEASON DESC; "
+    Year_Season=pd.read_sql(Year_Season_SQL,con=eng)
+
+    Financial_Ratio_Season_All_SQL="SELECT * \
+            FROM FINANCIAL_RATIO_SEASON \
+            WHERE YEAR='%s' \
+            AND SEASON='%s' \
+            UNION ALL \
+            SELECT * \
+            FROM FINANCIAL_RATIO_SEASON \
+            WHERE YEAR='%s' \
+            AND SEASON='%s' \
+            AND STOCK_NUM NOT IN ( \
+                SELECT DISTINCT STOCK_NUM \
+            FROM FINANCIAL_RATIO_SEASON \
+            WHERE YEAR='%s' \
+            AND SEASON='%s' \
+            )" \
+            %(Year_Season['YEAR'][0],Year_Season['SEASON'][0],Year_Season['YEAR'][1],\
+            Year_Season['SEASON'][1],Year_Season['YEAR'][0],Year_Season['SEASON'][0])
+    Financial_Ratio_Season_All=pd.read_sql(Financial_Ratio_Season_All_SQL,con=eng)
+    result = Financial_Ratio_Season_All.to_json(orient = 'records', force_ascii=False)
+    print(result)
