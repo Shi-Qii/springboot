@@ -9,7 +9,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = {"http://localhost:8080"})
 @RestController
-public class stockDataController {
+public class StockDataController {
 
     @Autowired
     StockService stockService;
